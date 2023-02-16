@@ -19,6 +19,8 @@
     - [Entity의 선언방법 예제](#entity의-선언방법-예제)
     - [JPQL](#jpql)
 
+---
+
 ## Hello JPA 프로젝트 생성
 
 ### 프로젝트 생성
@@ -65,6 +67,8 @@
 > DB들의 방언을 해결하기 위해 JPA는 Dialect를 사용해 방언을 해결한다.
 
 > 사용이 가능한 문법의 종류는 **hibernate.dialect**패키지에 존재하는 클래스들이 해당 종류들이며 **hibernate-core**에 해당 패키지가 존재한다.
+
+---
 
 ## Hello JPA 어플리케이션 개발
 
