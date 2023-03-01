@@ -31,7 +31,7 @@
 
 > 두개의 Dependency만 추가하고 Spring 설정은 사용하지 않는다.
 
-```
+```properties
     <!-- H2 -->
     <dependency>
       <groupId>com.h2database</groupId>
@@ -82,7 +82,7 @@
 
 > 해당 코드는 실제 저장이 되지 않는다
 
-```
+```java
 package hellojpa;
 
 import javax.persistence.EntityManager;
@@ -120,7 +120,7 @@ public class JpaMain {
 
 > 다음과 같이 트랜잭션을 EntityManager에서 획득후 시작과 종료가 필요
 
-```
+```java
     // GetTransaction And Start
     EntityTransaction tx = em.getTransaction();
     tx.begin();
@@ -137,7 +137,7 @@ public class JpaMain {
 
 #### JPA의 실행 결과 쿼리
 
-```
+```log
 Hibernate:
     /* insert hellojpa.Member
         */ insert
@@ -167,7 +167,7 @@ Hibernate:
 
 ### Entity의 선언방법 예제
 
-```
+```java
 package hellojpa;
 
 import javax.persistence.Entity;

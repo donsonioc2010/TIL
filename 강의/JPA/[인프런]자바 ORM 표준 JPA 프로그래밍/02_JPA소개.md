@@ -70,7 +70,7 @@ JOIN ON M.ID = T.ID
 
 > 모델링의 경우에도 객체를 테이블에 맞추어 모델링 하는 경우와 객체에 맞춘 모델링이 차이가 나게 되며 아래와 같다.
 
-```
+```java
 # 테이블에 맞춘 객체 모델링 [외래키를 바탕]
 class Member {
     String id;
@@ -110,7 +110,7 @@ class Team {
 
 > 비교를 진행하는 경우 **SQL 중심의 개발**일 경우에는 아래의 결과가 **다르게** 나온다
 
-```
+```java
 Member member1 = memberDAO.getMember(memberId);
 Member member2 = memberDAO.getMember(memberId);
 
@@ -184,7 +184,7 @@ class MemberDAO {
 
 > 예시로 member라는 객체가 존재할 떄를 가정하면 다음과 같은 코드로 개발된다.
 
-```
+```java
 # 저장
 jpa.persist(member);
 
