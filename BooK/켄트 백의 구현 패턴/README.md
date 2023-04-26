@@ -1,5 +1,10 @@
 # 켄트 백의 구현 패턴
 
+## MD 환경
+
+- Obsidian
+- Obsidian의 Admonition
+
 # 01. 소개
 
 ## 책의 목적
