@@ -7,3 +7,4 @@
 1. [Functional Interface](./Functional%20Interface.md)
 2. [Interface](./Interface.md)
 3. [Stream](./Stream.md)
+4. [Optional](Optional.md)
