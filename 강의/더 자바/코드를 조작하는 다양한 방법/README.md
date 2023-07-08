@@ -7,3 +7,4 @@
 ## Reflection
 
 - [Annotation](./Reflection/Annotation.md)
+- [Class의 정보 수정 및 실행 방법](./Reflection/Class%EC%9D%98%20%EC%A0%95%EB%B3%B4%20%EC%88%98%EC%A0%95%20%EB%98%90%EB%8A%94%20%EC%8B%A4%ED%96%89%EB%B2%95.md)
