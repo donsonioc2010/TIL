@@ -14,3 +14,5 @@
 ## Dynamic Proxy
 
 - [Proxy Pattern](./DynamicProxy/Proxy%20Pattern.md)
+- [Dynamic Proxy](./DynamicProxy/Dynamic%20Proxy.md)
+- [Class Proxy](./DynamicProxy/Class%20Proxy.md)
