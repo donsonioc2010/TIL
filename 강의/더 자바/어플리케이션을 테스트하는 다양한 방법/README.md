@@ -19,6 +19,7 @@
 
 ## Mockito
 
-| NO  | Chapter                           |
-| --- | --------------------------------- |
-| 1   | [Mockito란?](./Mockito/Mokito.md) |
+| NO  | Chapter                                                                                      |
+| --- | -------------------------------------------------------------------------------------------- |
+| 1   | [Mockito란?](./Mockito/Mokito.md)                                                            |
+| 2   | [Mock객체 생성 및 사용법](./Mockito/Mock%EA%B0%9D%EC%B2%B4%20%EC%82%AC%EC%9A%A9%EB%B2%95.md) |
