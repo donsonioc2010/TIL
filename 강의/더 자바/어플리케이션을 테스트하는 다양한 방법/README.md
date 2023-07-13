@@ -13,3 +13,4 @@
 | 7   | [TastCase의 반복실행법](./Junit5/TestCase%20%EB%B0%98%EB%B3%B5%EC%8B%A4%ED%96%89.md)                                                                  |
 | 8   | [Test의 Instace](./Junit5/Test%EC%9D%98%20Instance.md)                                                                                                |
 | 9   | [테스트 케이스의 순서 설정 방법](./Junit5/JUnit%20%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%88%9C%EC%84%9C%EC%84%A4%EC%A0%95.md)                              |
+| 10  | [junit-platform.properties를 통한 설정들](./Junit5/junit-platform.properties.md)                                                                      |
