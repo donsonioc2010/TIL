@@ -23,3 +23,15 @@
    1. `springframework.core.annotation`패키지의 `@Order(Integer Value)`와 혼동하는 것 주의
    2. `junit`의 `@Order(Integer value)`를 사용한다
       1. 낮은 Value일수록 `높은 우선순위`를 가진다
+
+### `@TestMethodOrder`의 Value
+
+> `@TestMethodOrder`의 경우 annotation의 `value`로 `MethodOrderer`의 구현체를 요구한다.
+
+#### `MethodOrderer`의 구현체의 종류
+
+> 기본 구현체는 다음과 같다.
+
+- `Alphanumeric`
+- `OrderAnnotation`
+- `Random`
