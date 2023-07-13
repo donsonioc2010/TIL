@@ -19,7 +19,8 @@
 
 ## Mockito
 
-| NO  | Chapter                                                                                      |
-| --- | -------------------------------------------------------------------------------------------- |
-| 1   | [Mockito란?](./Mockito/Mokito.md)                                                            |
-| 2   | [Mock객체 생성 및 사용법](./Mockito/Mock%EA%B0%9D%EC%B2%B4%20%EC%82%AC%EC%9A%A9%EB%B2%95.md) |
+| NO  | Chapter                                                                                              |
+| --- | ---------------------------------------------------------------------------------------------------- |
+| 1   | [Mockito란?](./Mockito/Mokito.md)                                                                    |
+| 2   | [Mock객체 생성 및 사용법](./Mockito/Mock%EA%B0%9D%EC%B2%B4%20%EC%82%AC%EC%9A%A9%EB%B2%95.md)         |
+| 3   | [Mock객체의 Stubbing방법](./Mockito/Mock%EA%B0%9D%EC%B2%B4%EC%9D%98%20Stubbing%EB%B0%A9%EB%B2%95.md) |
