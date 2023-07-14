@@ -25,3 +25,4 @@
 | 2   | [Mock객체 생성 및 사용법](./Mockito/Mock%EA%B0%9D%EC%B2%B4%20%EC%82%AC%EC%9A%A9%EB%B2%95.md)         |
 | 3   | [Mock객체의 Stubbing방법](./Mockito/Mock%EA%B0%9D%EC%B2%B4%EC%9D%98%20Stubbing%EB%B0%A9%EB%B2%95.md) |
 | 4   | [Mock 객체의 확인 방법](./Mockito/Mock%EA%B0%9D%EC%B2%B4%EC%9D%98%20%ED%99%95%EC%9D%B8.md)           |
+| 5   | [BDD스타일의 Mockito 활용법](./Mockito/BDD%20%EC%8A%A4%ED%83%80%EC%9D%BC%EC%9D%98%20Mockito.md)      |
