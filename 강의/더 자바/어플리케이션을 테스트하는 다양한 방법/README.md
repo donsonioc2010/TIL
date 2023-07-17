@@ -43,3 +43,9 @@
 | 1   | [JMeter](./JMeter/JMeter.md)                        |
 | 2   | [JMeter Install](./JMeter/JMeter%20Install.md)      |
 | 3   | [JMeter 사용법, 설정법](./JMeter/JMeter%20Usage.md) |
+
+## 운영 이슈 테스트 (Chaos Engineering)
+
+| NO  | Chapter                                                                                                |
+| --- | ------------------------------------------------------------------------------------------------------ |
+| 1   | [Chaos Monkey](./%EC%9A%B4%EC%98%81%EC%9D%B4%EC%8A%88%20%ED%85%8C%EC%8A%A4%ED%8A%B8/Chaos%20Monkey.md) |
