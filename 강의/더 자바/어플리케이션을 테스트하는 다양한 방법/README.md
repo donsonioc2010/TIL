@@ -50,3 +50,4 @@
 | --- | --------------------------------------------------------------------------------------------------------------------------- |
 | 1   | [Chaos Monkey](./%EC%9A%B4%EC%98%81%EC%9D%B4%EC%8A%88%20%ED%85%8C%EC%8A%A4%ED%8A%B8/Chaos%20Monkey.md)                      |
 | 2   | [Chaos Monkey Install And Setting](./%EC%9A%B4%EC%98%81%EC%9D%B4%EC%8A%88%20%ED%85%8C%EC%8A%A4%ED%8A%B8/CM4SB%20Install.md) |
+| 3   | [ChaosMonkey Latency](./%EC%9A%B4%EC%98%81%EC%9D%B4%EC%8A%88%20%ED%85%8C%EC%8A%A4%ED%8A%B8/CM4SB%20Latency.md)              |
