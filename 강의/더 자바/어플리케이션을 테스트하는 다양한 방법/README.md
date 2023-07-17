@@ -38,6 +38,7 @@
 
 ## 성능테스트
 
-| NO  | Chapter                      |
-| --- | ---------------------------- |
-| 1   | [JMeter](./JMeter/JMeter.md) |
+| NO  | Chapter                                        |
+| --- | ---------------------------------------------- |
+| 1   | [JMeter](./JMeter/JMeter.md)                   |
+| 2   | [JMeter Install](./JMeter/JMeter%20Install.md) |
