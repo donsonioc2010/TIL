@@ -51,3 +51,8 @@
 | 1   | [Chaos Monkey](./%EC%9A%B4%EC%98%81%EC%9D%B4%EC%8A%88%20%ED%85%8C%EC%8A%A4%ED%8A%B8/Chaos%20Monkey.md)                      |
 | 2   | [Chaos Monkey Install And Setting](./%EC%9A%B4%EC%98%81%EC%9D%B4%EC%8A%88%20%ED%85%8C%EC%8A%A4%ED%8A%B8/CM4SB%20Install.md) |
 | 3   | [ChaosMonkey Latency](./%EC%9A%B4%EC%98%81%EC%9D%B4%EC%8A%88%20%ED%85%8C%EC%8A%A4%ED%8A%B8/CM4SB%20Latency.md)              |
+
+### 아케턱쳐 테스트
+
+> 보면서 느낀점이 지금 내 레벨에서 이부분이 필요할까?활용할 수 있을까 라는생각을 가졌다..
+> 영상으로 보기만하고 해당 부분에 대해서는 추후 필요하다 생각될때 다시 공부해보자.
