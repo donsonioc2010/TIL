@@ -7,3 +7,7 @@
 - [Abstract Factory](<./Creational(생성)%20Pattern/Abstract Factory.md>)
 - [Builder](<./Creational(생성) Pattern/Builder.md>)
 - [Prototype](<./Creational(생성) Pattern/Prototype.md>)
+
+## 구조 패턴 (Structure)
+
+- [Adapter](<./Structure(구조)%20Pattern/Adapter.md>)
