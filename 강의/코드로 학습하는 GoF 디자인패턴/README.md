@@ -11,3 +11,4 @@
 ## 구조 패턴 (Structure)
 
 - [Adapter](<./Structure(구조)%20Pattern/Adapter.md>)
+- [Bridge](<./Structure(구조) Pattern/Bridge.md>)
