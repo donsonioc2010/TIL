@@ -16,3 +16,4 @@
 - [Decorator](<./Structure(구조)%20Pattern/Decorator.md>)
 - [Facade](<./Structure(구조)%20Pattern/Facade.md>)
 - [Flyweight](<./Structure(구조)%20Pattern/Flyweight.md>)
+- [Proxy](<./Structure(구조)%20Pattern/Proxy.md>)
