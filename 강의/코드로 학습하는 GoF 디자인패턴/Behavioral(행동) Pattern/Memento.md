@@ -24,7 +24,7 @@
 
 ## Source
 
-### After Source
+### Before Source
 
 #### Main, Client
 
@@ -71,7 +71,7 @@ public class Game implements Serializable {
 }
 ```
 
-### Before Source
+### After Source
 
 #### Main, Client
 

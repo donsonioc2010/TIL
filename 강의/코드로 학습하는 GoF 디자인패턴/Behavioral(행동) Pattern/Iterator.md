@@ -18,7 +18,7 @@
 
 ## Source
 
-### After Source
+### Before Source
 
 > Client레벨에서 List를 사용한다는 것을 알아야 사용이 가능한 전체의 소스가 되버린다.
 > Client에서는 List인지 Set인지 어떤 객체를 쓰는지를 숨기고 싶은 것
@@ -87,7 +87,7 @@ public class Post {
 }
 ```
 
-### Before Source
+### After Source
 
 > 사용자는 무슨 집합객체인지를 파악이 불가하고, Iterator를 통해서 순회하며 조회가 가능하다
 
