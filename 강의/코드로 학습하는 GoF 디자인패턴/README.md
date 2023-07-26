@@ -21,6 +21,7 @@
 ## 행동 패턴 (Behavioral)
 
 - [Chain Of Responsibility](<./Behavioral(행동)%20Pattern/Chain%20of%20Responsibility.md>)
+- [Command](<./Behavioral(행동)%20Pattern/Command.md>)
 
 ## 느낀점? 또는 배운점?
 
