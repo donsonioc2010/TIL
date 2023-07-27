@@ -30,6 +30,7 @@
 - [State](<./Behavioral(행동)%20Pattern/State.md>)
 - [Strategy](<./Behavioral(행동)%20Pattern/Strategy.md>)
 - [Template Method](<./Behavioral(행동)%20Pattern/Template%20Method.md>)
+- [Visitor](<./Behavioral(행동)%20Pattern/Visitor.md>)
 
 ## 느낀점? 또는 배운점?
 
