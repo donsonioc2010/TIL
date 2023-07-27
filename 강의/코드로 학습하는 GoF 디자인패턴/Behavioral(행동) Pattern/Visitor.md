@@ -8,6 +8,7 @@
 
 - Element의 Interface가 존재하고 하위 클래스를 구현한다.
 - Visitor가 Interface로 존재하고, Visitor는 각각의 Element를 참조받는 VisitMethod가 존재하며, Element별로 `Overloading`되어 있다.
+- 예제의 Visitor 는 같은 Method를 Overloading을 하여 진행하였지만, 굳이 같은 명칭을 칭하지 않아도 되며, 다른명칭으로 하는게 가독성에는 더 좋을 수도 있다.
 
 ## Pattern Structure
 
