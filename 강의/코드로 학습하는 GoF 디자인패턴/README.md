@@ -28,6 +28,7 @@
 - [Memento](<./Behavioral(행동)%20Pattern/Memento.md>)
 - [Observer](<./Behavioral(행동)%20Pattern/Observer.md>)
 - [State](<./Behavioral(행동)%20Pattern/State.md>)
+- [Strategy](<./Behavioral(행동)%20Pattern/Strategy.md>)
 
 ## 느낀점? 또는 배운점?
 
