@@ -12,6 +12,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -23,15 +24,17 @@ import static com.jong1.domain.OrderStatus.CANCEL;
 import static com.jong1.domain.OrderStatus.ORDER;
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
+import static lombok.AccessLevel.PROTECTED;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "orders")
+@NoArgsConstructor(access = PROTECTED)
 public class Order {
     @Id
     @GeneratedValue
-    @Column(name="order_id")
+    @Column(name = "order_id")
     private Long id;
 
     //외래키, 연관관계 주인( FK가 있는곳이 주인으로 지정하는게 편함)
@@ -80,11 +83,12 @@ public class Order {
     }
 
     // ===비즈니스 로직===
+
     /**
      * 주문 취소
      */
     public void cancel() {
-        if(DeliveryStatus.COMP.equals(delivery.getStatus())) {
+        if (DeliveryStatus.COMP.equals(delivery.getStatus())) {
             throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
         }
 
@@ -93,6 +97,7 @@ public class Order {
     }
 
     // ===조회 로직===
+
     /**
      * 전체 주문 가격 조회
      */
