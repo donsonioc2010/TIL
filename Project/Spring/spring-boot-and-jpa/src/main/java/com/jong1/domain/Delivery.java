@@ -7,11 +7,11 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
 @Setter
@@ -22,7 +22,7 @@ public class Delivery {
     @Column(name="delivery_id")
     private Long id;
 
-    @OneToOne(mappedBy = "delivery")
+    @OneToOne(mappedBy = "delivery", fetch = LAZY)
     private Order order;
 
     @Embedded

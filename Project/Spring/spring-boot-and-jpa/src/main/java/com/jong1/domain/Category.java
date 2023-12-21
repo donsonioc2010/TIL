@@ -16,6 +16,8 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Getter
 @Setter
 @Entity
@@ -35,10 +37,17 @@ public class Category {
     )
     private List<Item> items = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "parent_id")
     private Category parent;
 
     @OneToMany(mappedBy = "parent") // 자식의 parent변수와 mapping
     private List<Category> child = new ArrayList<>();
+
+    // === 연관관계 편의 메소드 === //
+    public void addChildCategory(Category child) {
+        this.child.add(child);
+        child.setParent(this);
+    }
+
 }
