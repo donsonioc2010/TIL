@@ -19,6 +19,12 @@ public class ItemService {
         itemRepository.save(item);
     }
 
+    @Transactional
+    public void updateItem(Long itemId, String name, int price, int stockQuantity) {
+        Item findItem = itemRepository.findById(itemId);
+        findItem.change(name, price, stockQuantity); // setter 대신 change 메서드를 만들어서 사용하는 것이 좋다. (핵심 비즈니스 로직이 들어가기 때문
+    }
+
     public List<Item> findItems() {
         return itemRepository.findAll();
     }

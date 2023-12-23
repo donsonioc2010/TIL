@@ -25,15 +25,4 @@ public class BookForm {
         book.setIsbn(this.isbn);
         return book;
     }
-
-    public Book updateEntity() {
-        Book book = new Book();
-        book.setId(this.id);
-        book.setName(this.name);
-        book.setPrice(this.price);
-        book.setStockQuantity(this.stockQuantity);
-        book.setAuthor(this.author);
-        book.setIsbn(this.isbn);
-        return book;
-    }
 }
