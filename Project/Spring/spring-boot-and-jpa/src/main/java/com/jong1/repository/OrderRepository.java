@@ -1,6 +1,7 @@
 package com.jong1.repository;
 
 import com.jong1.domain.Order;
+import com.jong1.vo.OrderSearch;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,5 +21,7 @@ public class OrderRepository {
         return em.find(Order.class, id);
     }
 
-//    public List<Order> findAll(OrderSearch orderSearch){}
+/*    public List<Order> findAll(OrderSearch orderSearch){
+        return em.createQuery("select o from Order o join o.member m", Order.class)
+    }*/
 }
