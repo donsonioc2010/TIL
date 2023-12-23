@@ -18,12 +18,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MemberController {
     private final MemberService memberService;
 
+    /**
+     * 회원 목록 조회
+     * @param model
+     * @return
+     */
+    @GetMapping
+    public String list(Model model) {
+        model.addAttribute("members", memberService.findMembers());
+        return "members/memberList";
+    }
+
+    /**
+     * 회원가입 폼으로 이동
+     */
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("memberForm", new MemberForm());
         return "members/createMemberForm";
     }
 
+    /**
+     * 회원가입 기능 실행
+     * @param form
+     * @param result
+     * @return
+     */
     @PostMapping("/new")
     public String create(@Valid MemberForm form, BindingResult result) {
         if(result.hasErrors()) {
