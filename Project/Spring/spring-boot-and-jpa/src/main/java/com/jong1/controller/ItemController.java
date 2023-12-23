@@ -15,12 +15,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ItemController {
     private final ItemService itemService;
 
+    /**
+     * 상품 목록 조회
+     */
+    @GetMapping
+    public String list(Model model) {
+        model.addAttribute("items", itemService.findItems());
+        return "items/itemList";
+    }
+
+    /**
+     * 상품 등록 페이지 이동
+     */
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("form", new BookForm());
         return "items/createItemForm";
     }
 
+    /**
+     * 상품 등록
+     */
     @PostMapping("/new")
     public String create(BookForm form) {
         itemService.saveItem(form.createEntity());
