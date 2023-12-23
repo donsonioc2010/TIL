@@ -5,9 +5,13 @@ import com.jong1.domain.Member;
 import com.jong1.service.MemberService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +31,35 @@ public class MemberApiController {
         Member member = request.toEntity();
         Long id = memberService.join(member);
         return new CreateMemberResponse(id);
+    }
+
+    @PutMapping("/api/v2/members/{id}")
+    public UpdateMemberResponse updateMemberV2(
+            @PathVariable("id") Long id,
+            @RequestBody @Valid UpdateMemberRequest request
+    ) {
+        memberService.update(id, request.getName(), request.getAddress());
+        Member findMember = memberService.findOne(id);
+        return UpdateMemberResponse.builder()
+                .id(findMember.getId())
+                .name(findMember.getName())
+                .build();
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    static class UpdateMemberResponse {
+        private Long id;
+        private String name;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class UpdateMemberRequest {
+        private String name;
+        private Address address;
     }
 
     @Data

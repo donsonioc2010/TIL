@@ -1,5 +1,6 @@
 package com.jong1.service;
 
+import com.jong1.domain.Address;
 import com.jong1.domain.Member;
 import com.jong1.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,15 @@ public class MemberService {
         List<Member> findMembers = memberRepository.findByName(member.getName());
         if (!findMembers.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
+    }
+
+    @Transactional
+    public void update(Long id, String name, Address address) {
+        Member member =         memberRepository.findById(id);
+        member.setName(name);
+        if(address != null) {
+            member.setAddress(address);
         }
     }
 }
