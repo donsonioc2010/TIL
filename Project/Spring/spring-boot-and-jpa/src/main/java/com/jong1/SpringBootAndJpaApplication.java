@@ -13,7 +13,7 @@ public class SpringBootAndJpaApplication {
     }
 
     @Bean
-    Hibernate5JakartaModule hibernate5JakartaModule() {
+    public Hibernate5JakartaModule hibernate5JakartaModule() {
         return new Hibernate5JakartaModule(); //기본적으로 초기화 된 프록시 객체만 노출, 초기화 되지 않은 프록시 객체(지연로딩된 객체)는 노출 안함
     /*
         Hibernate5JakartaModule hibernate5Module = new Hibernate5JakartaModule();

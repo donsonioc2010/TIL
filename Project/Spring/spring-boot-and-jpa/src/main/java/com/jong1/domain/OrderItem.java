@@ -1,5 +1,6 @@
 package com.jong1.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jong1.domain.item.Item;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +30,7 @@ public class OrderItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "order_id")
     private Order order;

@@ -1,5 +1,6 @@
 package com.jong1.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -29,6 +30,7 @@ public class Member {
     @Embedded
     private Address address;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "member") // Order테이블의 member변수와 mapping, 조회만 가능
     private List<Order> orders = new ArrayList<>();
 
