@@ -1,16 +1,14 @@
 package com.jong1.api;
 
-import com.jong1.domain.Address;
 import com.jong1.domain.Order;
-import com.jong1.domain.OrderStatus;
 import com.jong1.repository.OrderRepository;
+import com.jong1.repository.order.simplequery.OrderSimpleQueryDto;
+import com.jong1.repository.order.simplequery.OrderSimpleQueryRepository;
 import com.jong1.vo.OrderSearch;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderSimpleApiController {
     private final OrderRepository orderRepository;
+    private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
     // 설정이 없는 경우에는, Jackson에서 JSON변환시 순환참조 발생!
     @GetMapping("/api/v1/simple-orders")
@@ -38,36 +37,24 @@ public class OrderSimpleApiController {
     }
 
     @GetMapping("/api/v2/simple-orders")
-    public List<SimpleOrderDto> orderV2() {
+    public List<OrderSimpleQueryDto> orderV2() {
         return orderRepository.findAllByString(new OrderSearch())
                 .stream()
-                .map(SimpleOrderDto::new)
+                .map(OrderSimpleQueryDto::new)
                 .toList();
     }
 
     @GetMapping("/api/v3/simple-orders")
-    public List<SimpleOrderDto> orderV3() {
+    public List<OrderSimpleQueryDto> orderV3() {
         return orderRepository.findAllMemberDelivery()
                 .stream()
-                .map(SimpleOrderDto::new)
+                .map(OrderSimpleQueryDto::new)
                 .toList();
     }
 
-    @Data
-    static class SimpleOrderDto {
-        private Long orderId;
-        private String name;
-        private LocalDateTime orderDate;
-        private OrderStatus orderStatus;
-        private Address address;
-
-        public SimpleOrderDto(Order order) {
-            orderId = order.getId();
-            name = order.getMember().getName(); // Lazy 초기화
-            orderDate = order.getOrderDate();
-            orderStatus = order.getStatus();
-            address = order.getDelivery().getAddress(); // Lazy 초기화
-        }
+    @GetMapping("/api/v4/simple-orders")
+    public List<OrderSimpleQueryDto> orderV4() {
+        return orderSimpleQueryRepository.findOrderDtos();
     }
 
 }
