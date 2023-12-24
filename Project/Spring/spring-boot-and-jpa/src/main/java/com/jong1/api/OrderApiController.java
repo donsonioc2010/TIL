@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class OrderAipController {
+public class OrderApiController {
     private final OrderRepository orderRepository;
 
     @GetMapping("/api/v1/orders")
@@ -67,5 +67,14 @@ public class OrderAipController {
             this.orderPrice = orderItem.getOrderPrice();
             this.count = orderItem.getCount();
         }
+    }
+
+    @GetMapping("/api/v3/orders")
+    public List<OrderDto> ordersV3() {
+        List<Order> result = orderRepository.findAllWithItem();
+        result.forEach(o-> {
+            System.out.println("order ref = " + o + " id = " + o.getId());
+        });
+        return         result.stream().map(OrderDto::new).toList();
     }
 }

@@ -71,4 +71,17 @@ public class OrderRepository {
                 .getResultList();
     }
 
+    public List<Order> findAllWithItem() {
+        /**
+         * 과거에는 Order * OrderItem의 Row가 결과로 나왔었으며, distinct o를 통해 중복을 제거했었으나,
+         * Hibernate 6.0 이후 에서부터는 distinct가 자동적용이 되어있다.
+         */
+        return em.createQuery(
+                        "select o from Order  o " +
+                                "join fetch o.member m " +
+                                "join fetch o.delivery d " +
+                                "join fetch o.orderItems oi " +
+                                "join fetch oi.item i ", Order.class)
+                .getResultList();
+    }
 }
