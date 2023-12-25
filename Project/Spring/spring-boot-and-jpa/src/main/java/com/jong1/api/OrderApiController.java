@@ -5,6 +5,8 @@ import com.jong1.domain.Order;
 import com.jong1.domain.OrderItem;
 import com.jong1.domain.OrderStatus;
 import com.jong1.repository.OrderRepository;
+import com.jong1.repository.order.query.OrderQueryRepository;
+import com.jong1.repository.order.query.OrderQuerytDto;
 import com.jong1.vo.OrderSearch;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderApiController {
     private final OrderRepository orderRepository;
+    private final OrderQueryRepository orderQueryRepository;
 
     @GetMapping("/api/v1/orders")
     public List<Order> ordersV1() {
@@ -83,5 +86,10 @@ public class OrderApiController {
     ) {
         return orderRepository.findAllWithMemberDelivery(offset, limit)
                 .stream().map(OrderDto::new).toList();
+    }
+
+    @GetMapping("/api/v4/orders")
+    public List<OrderQuerytDto> orersV4() {
+        return orderQueryRepository.findOrderQueryDtos();
     }
 }
