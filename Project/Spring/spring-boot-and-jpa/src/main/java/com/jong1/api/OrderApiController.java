@@ -6,7 +6,7 @@ import com.jong1.domain.OrderItem;
 import com.jong1.domain.OrderStatus;
 import com.jong1.repository.OrderRepository;
 import com.jong1.repository.order.query.OrderQueryRepository;
-import com.jong1.repository.order.query.OrderQuerytDto;
+import com.jong1.repository.order.query.OrderQueryDto;
 import com.jong1.vo.OrderSearch;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -89,11 +89,17 @@ public class OrderApiController {
     }
 
     @GetMapping("/api/v4/orders")
-    public List<OrderQuerytDto> orersV4() {
+    public List<OrderQueryDto> orersV4() {
         return orderQueryRepository.findOrderQueryDtos();
     }
     @GetMapping("/api/v5/orders")
-    public List<OrderQuerytDto> orersV5() {
+    public List<OrderQueryDto> orersV5() {
         return orderQueryRepository.findAllByDto_optimization();
+    }
+
+
+    @GetMapping("/api/v6/orders")
+    public List<OrderQueryDto> orersV6() {
+        return orderQueryRepository.findAllByDto_flat();
     }
 }
