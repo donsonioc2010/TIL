@@ -141,3 +141,36 @@ Batch의 역할은, 조회해야할 쿼리에 대해 IN절을 사용하여 한�
 - ToOne 관계는 fetch join으로 최적화
 - ToMany 관계는 hibernate.default_batch_fetch_size, @BatchSize로 최적화
 - ToOne관계만 조회한뒤, 페이징은 정상적으로 기능작동이 가능함. 이후 Batch를 동해서 N+1문제를 해결한다.
+
+## OSIV
+- Open Session In View의 약자이다
+- JPA에서의 EntityManager가 하이버네이트의 Session과 동일하다.
+
+### OSIV 커넥션 설정에 대해
+- DB의 커넥션의 시작 트랜잭션이 묶였을때로 볼 수 있으나 종료는 OSIV설정에 따라 달라진다.
+  - OSIV ON의 경우에는, View가 렌더링 될때까지 트랜잭션을 유지한다.
+  - API인 경우에는, API가 끝날때까지 트랜잭션을 유지한다.
+  - OSIV OFF의 경우에는, 서비스 로직이 끝나면 트랜잭션을 종료한다.(보통 트랜잭션 원자성을 Service까지만 쓰니까 서비스라 칭함)
+
+### OSIV ON
+- 설정은 `spring.jpa.open-in-view=true`로 설정한다.
+
+#### ON일때의 장단점
+- 장점
+  - 트랜잭션을 종료할때까지 View Template에서 지연로딩이 가능하다.
+- 단점
+  - 커넥션을 차지하는 시간이 너무 길다
+  - 실시간 트래픽이 중요한 어플리케이션에서 요청이 많을 떄 커넥션을 차지하는 시간이 길어지면, 커넥션 풀이 고갈되어 서버가 죽을 수 있다.
+
+### OSIV OFF
+- 설정은 `spring.jpa.open-in-view=false`로 설정한다.
+
+#### OFF일때의 장단점
+- 장점
+  - 커넥션을 차지하는 시간이 짧다
+- 단점
+  - Transaction원자성이 종료되는 영역에서, 지연로딩 객체의 호출(사용)이 불가능하다.
+
+## 권장하는 방법
+- 트래픽이 많은 경우에는 Off, ADMIN같은 요청이 많으 없는 프로젝트에서는 ON을 해서 편의성을 높이는게 편하다.
+
