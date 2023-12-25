@@ -1,0 +1,24 @@
+# 주문조회
+
+### V1 Entity 를 조회하는 간단한 예제
+GET http://localhost:8080/api/v1/orders
+
+### V2 DTO 로 변환하여 조회
+GET http://localhost:8080/api/v2/orders
+
+### V3 DTO 에서 Fetch를 활용해 데이터 일괄가져오도록 변경
+GET http://localhost:8080/api/v3/orders
+
+### V3.1 DTO 에서 Batch Fetch를 활용해 IN 쿼리로 변경
+GET http://localhost:8080/api/v3.1/orders?offset=0&limit=100
+
+### V4 JPA에서 DTO로 바로 조회, 컬렉션 N 조회 (1+N 문제)
+GET http://localhost:8080/api/v4/orders
+
+### V5 JPA에서 DTO로 바로 조회, 컬렉션 1 조회 최적화 버전 (1+1)
+GET http://localhost:8080/api/v5/orders
+
+### V6 JPA에서 DTO로 바로 조회, 플랫 데이터 최적화 (1)
+GET http://localhost:8080/api/v6/orders
+
+

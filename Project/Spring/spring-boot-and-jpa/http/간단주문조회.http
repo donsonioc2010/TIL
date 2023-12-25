@@ -1,0 +1,13 @@
+### Simple 주문조회
+
+### V1 - Entity조회 방식
+GET http://localhost:8080/api/v1/simple-orders
+
+### V2 - N+1 문제가 발생하는 조회
+GET http://localhost:8080/api/v2/simple-orders
+
+### V3 - fetch join으로 N+1 문제 해결
+GET http://localhost:8080/api/v3/simple-orders
+
+### V4 - JPA에서 DTO로 바로 조회
+GET http://localhost:8080/api/v4/simple-orders

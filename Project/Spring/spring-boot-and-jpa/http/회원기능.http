@@ -1,0 +1,58 @@
+# 회원기능
+
+### 사용자추가 V1
+POST http://localhost:8080/api/v1/members
+Content-Type: application/json
+
+{
+  "name": "jong1"
+}
+
+### 사용자추가 V2 - 주소가 없는 경우
+POST http://localhost:8080/api/v2/members
+Cookie: JSESSIONID=2D226617DD63BA5AF351958915C52265
+Content-Type: application/json
+
+{
+  "name": "응애2"
+}
+
+### 사용자추가 V2 - 주소가 있는 경우
+POST http://localhost:8080/api/v2/members
+Cookie: JSESSIONID=2D226617DD63BA5AF351958915C52265
+Content-Type: application/json
+
+{
+  "name": "응애2",
+  "address": {
+    "city": "zzz",
+    "street": "도로",
+    "zipcode": "집코드"
+  }
+}
+
+### 사용자정보 수정 - 주소가 없는 경우
+PUT http://localhost:8080/api/v2/members/1
+Cookie: JSESSIONID=2D226617DD63BA5AF351958915C52265
+Content-Type: application/json
+
+{
+  "name": "new-hi"
+}
+
+### 사용자정보 수정 - 주소가 있는 경우
+PUT http://localhost:8080/api/v2/members/1
+Cookie: JSESSIONID=2D226617DD63BA5AF351958915C52265
+Content-Type: application/json
+
+{
+  "name": "new-hi",
+  "address": {
+    "city": "안양",
+    "street": "저편",
+    "zipcode": "내집코드"
+  }
+}
+
+###
+
