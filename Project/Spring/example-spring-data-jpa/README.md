@@ -10,5 +10,15 @@
 - Spring Data JPA에 대한 소개
 - Spring Data JPA 공통 인터페이스 활용 및 생성
 
+## 반환타입
+- List인 경우에는 Empty List를 반환한다.
+- Optional인 경우에는 Optional.empty를 반환한다.
+- 단건 조회인 경우에는 JPA는 Exception이 발생하나, Spring Data JPA는 결과가 없으면 null을 반환한다.
+  - 그래서 단건은 Optional을 써라
+
+### 단건 반환 주의사항
+- 단건인 경우에는 반환이 가능하나, 여러건인 경우에는 반환할 수 없다.
+  - 단건에서 여러건이 발생시 NotUnique Exception이 발생한다.
+
 ## 기록
 - NamedQuery는 거의 사용하지 않는다.
