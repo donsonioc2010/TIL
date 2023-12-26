@@ -9,3 +9,6 @@
 - EntityManager를 주입받아 순수한 JPA기반 Repository를 생성
 - Spring Data JPA에 대한 소개
 - Spring Data JPA 공통 인터페이스 활용 및 생성
+
+## 기록
+- NamedQuery는 거의 사용하지 않는다.

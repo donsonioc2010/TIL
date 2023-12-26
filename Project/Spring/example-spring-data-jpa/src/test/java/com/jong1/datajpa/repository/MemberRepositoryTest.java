@@ -97,4 +97,19 @@ class MemberRepositoryTest {
 
         assertEquals(memberRepository.findTop3By().size(), 3);
     }
+
+    @Test
+    void namedQuery() {
+        // given
+        Member member1 = Member.builder().username("AAA").age(10).build();
+        Member member2 = Member.builder().username("BBB").age(20).build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        // when
+        List<Member> result = memberRepository.findByUsername("AAA");
+
+        // then
+        assertEquals(result.get(0), member1);
+    }
 }
