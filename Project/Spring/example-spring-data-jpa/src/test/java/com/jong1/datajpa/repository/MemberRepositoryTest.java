@@ -158,4 +158,19 @@ class MemberRepositoryTest {
         // when && then
         memberRepository.findMemberDto().forEach(System.out::println);
     }
+
+    @Test
+    void findByNames() {
+        // given
+        Team team = Team.builder().name("teamA").build();
+        teamRepository.save(team);
+
+        Member member1 = Member.builder().username("AAA").age(10).team(team).build();
+        Member member2 = Member.builder().username("BBB").age(20).team(team).build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        // when && then
+        memberRepository.findByNames(List.of("AAA", "BBB")).forEach(System.out::println);
+    }
 }
