@@ -7,7 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
@@ -16,7 +19,6 @@ class MemberJpaRepositoryTest {
 
     @Autowired
     private MemberJpaRepository memberJpaRepository;
-
 
     @Test
     public void testMember() {
@@ -35,7 +37,6 @@ class MemberJpaRepositoryTest {
         assertEquals(savedMember.getId(), findMember.getId());
         assertEquals(savedMember.getUsername(), findMember.getUsername());
     }
-
 
     @Test
     void basicCRUD() {
@@ -63,5 +64,22 @@ class MemberJpaRepositoryTest {
 
         long deletedCount = memberJpaRepository.count();
         assertEquals(deletedCount, 0);
+    }
+
+    @Test
+    void findByUsernameAndAgeGreaterThen() {
+        // given
+        Member member1 = Member.builder().username("AAA").age(10).build();
+        Member member2 = Member.builder().username("AAA").age(20).build();
+        memberJpaRepository.save(member1);
+        memberJpaRepository.save(member2);
+
+        // when
+        List<Member> result = memberJpaRepository.findByUsernameAndAgeGreaterThan("AAA", 15);
+
+        // then
+        assertEquals("AAA", result.get(0).getUsername());
+        assertEquals(20, result.get(0).getAge());
+        assertEquals(1, result.size());
     }
 }

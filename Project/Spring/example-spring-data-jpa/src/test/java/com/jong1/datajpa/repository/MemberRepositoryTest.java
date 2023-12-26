@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -60,4 +62,39 @@ class MemberRepositoryTest {
         assertEquals(deletedCount, 0);
     }
 
+
+    @Test
+    void findByUsernameAndAgeGreaterThen() {
+        // given
+        Member member1 = Member.builder().username("AAA").age(10).build();
+        Member member2 = Member.builder().username("AAA").age(20).build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        // when
+        List<Member> result = memberRepository.findByUsernameAndAgeGreaterThan("AAA", 15);
+
+        // then
+        assertEquals("AAA", result.get(0).getUsername());
+        assertEquals(20, result.get(0).getAge());
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void findTop3By() {
+        Member member1 = Member.builder().username("AAA").age(10).build();
+        Member member2 = Member.builder().username("AAA").age(20).build();
+        Member member3 = Member.builder().username("AAA").age(30).build();
+        Member member4 = Member.builder().username("AAA").age(40).build();
+        Member member5 = Member.builder().username("AAA").age(50).build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+        memberRepository.save(member4);
+        memberRepository.save(member5);
+
+        memberRepository.findTop3By().forEach(System.out::println);
+
+        assertEquals(memberRepository.findTop3By().size(), 3);
+    }
 }
