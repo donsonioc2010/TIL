@@ -20,5 +20,17 @@
 - 단건인 경우에는 반환이 가능하나, 여러건인 경우에는 반환할 수 없다.
   - 단건에서 여러건이 발생시 NotUnique Exception이 발생한다.
 
+## 페이징
+- `org.springframework.data.domain.Pageable`를 사용한다. 페이징 기능에 활용하며, 내부에 `Sort`가 포함되어있다.
+- `org.springframework.data.domain.Sort`를 사용한다. 정렬 기능에 활용한다.
+
+### 특별한 반환타입
+- `org.springframework.data.domain.Page` 추가 count쿼리 결과를 포함하는 페이징
+- `org.springframework.data.domain.Slice` 추가 count쿼리 없이 다음 페이지만 확인 가능한 페이징
+- `List`(자바 컬렉션) 추가 count쿼리 없이 결과만 반환
+
+### Pageable객체 생성시 주의사항
+- Page가 0부터 시작한다.
+
 ## 기록
 - NamedQuery는 거의 사용하지 않는다.

@@ -1,10 +1,14 @@
 package com.jong1.datajpa.repository;
 
+import com.jong1.datajpa.dto.MemberDto;
 import com.jong1.datajpa.entity.Member;
 import com.jong1.datajpa.entity.Team;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -172,5 +176,39 @@ class MemberRepositoryTest {
 
         // when && then
         memberRepository.findByNames(List.of("AAA", "BBB")).forEach(System.out::println);
+    }
+
+
+    @Test
+    void paging() {
+        // given
+        memberRepository.save(Member.builder().username("member1").age(10).build());
+        memberRepository.save(Member.builder().username("member2").age(10).build());
+        memberRepository.save(Member.builder().username("member3").age(10).build());
+        memberRepository.save(Member.builder().username("member4").age(10).build());
+        memberRepository.save(Member.builder().username("member5").age(10).build());
+        memberRepository.save(Member.builder().username("member6").age(10).build());
+        memberRepository.save(Member.builder().username("member7").age(10).build());
+
+        int age = 10;
+        int offset =0;
+        int limit = 3;
+
+        // Sorting은 Optional이다
+        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+
+        // when
+        Page<Member> members = memberRepository.findByAge(age, pageRequest);
+
+        // then
+        assertEquals(3, members.getContent().size()); // 현재 페이지에 나온 Row갯수
+        assertEquals(7, members.getTotalElements()); // 전체 Row갯수
+        assertEquals(3, members.getTotalPages()); // 전체 페이지 갯수
+        assertEquals(0, members.getNumber());   // 현재 페이지 번호
+        assertTrue(members.isFirst());  //첫 페이지 여부 확인
+        assertTrue(members.hasNext()); // 다음 페이지 여부 확인
+
+        // Page내부의 결과를 변경하는방법
+        members.map(member -> new MemberDto(member.getId(), member.getUsername(), null)).forEach(System.out::println);
     }
 }
