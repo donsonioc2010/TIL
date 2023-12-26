@@ -1,6 +1,7 @@
 package com.jong1.datajpa.repository;
 
 import com.jong1.datajpa.entity.Member;
+import com.jong1.datajpa.entity.Team;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class MemberRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private TeamRepository teamRepository;
 
     @Test
     public void testMember() {
@@ -124,5 +127,35 @@ class MemberRepositoryTest {
         // when && then
         assertEquals(member1, memberRepository.findUser("AAA", 10).get(0));
         assertEquals(member2, memberRepository.findUser("BBB", 20).get(0));
+    }
+
+    @Test
+    void findUsernameList() {
+        // given
+        Member member1 = Member.builder().username("AAA").age(10).build();
+        Member member2 = Member.builder().username("BBB").age(20).build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        // when && then
+        List<String> usernameList = memberRepository.findUsernameList();
+        for (String username : usernameList) {
+            System.out.println("username = " + username);
+        }
+    }
+
+    @Test
+    void findMemberDto() {
+        // given
+        Team team = Team.builder().name("teamA").build();
+        teamRepository.save(team);
+
+        Member member1 = Member.builder().username("AAA").age(10).team(team).build();
+        Member member2 = Member.builder().username("BBB").age(20).team(team).build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        // when && then
+        memberRepository.findMemberDto().forEach(System.out::println);
     }
 }
