@@ -112,4 +112,17 @@ class MemberRepositoryTest {
         // then
         assertEquals(result.get(0), member1);
     }
+
+    @Test
+    void testQuery() {
+        // given
+        Member member1 = Member.builder().username("AAA").age(10).build();
+        Member member2 = Member.builder().username("BBB").age(20).build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        // when && then
+        assertEquals(member1, memberRepository.findUser("AAA", 10).get(0));
+        assertEquals(member2, memberRepository.findUser("BBB", 20).get(0));
+    }
 }
