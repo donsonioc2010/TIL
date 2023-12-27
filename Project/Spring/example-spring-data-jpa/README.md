@@ -38,3 +38,7 @@
   - 영속성 컨텍스트에 보관중인 객체들이 DB와 다른 값을 가지게 된다.
   - 해결 방법은 Bulk연산 이후 EntityManager를 호출하여 `flush()`와 `clear()`를 호출하여 영속성 컨텍스트를 날려준다.
   - MyBatis등 쿼리작업을 직접 할때도 영속성 컨텍스트를 날려줘야한다.
+
+## Paging의 기본설정
+- `spring.data.web.pageable.default-page-size=20` 기본페이지 설정 (글로벌설정)
+- `spring.data.web.pageable.max-page-size=2000` 최대페이지 설정

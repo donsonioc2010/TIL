@@ -1,0 +1,14 @@
+### 페이징 아무요청없이
+GET http://localhost:8080/members
+
+### 페이징 요청, Page만 기록
+GET http://localhost:8080/members?page=1
+
+### 페이징 요청, Page, Size 기록
+GET http://localhost:8080/members?page=1&size=3
+
+### 페이징 요청, Page, Size, Sort 기록
+GET http://localhost:8080/members?page=1&size=3&sort=id,desc
+
+### 페이징요청, MemberDto로 변환
+GET http://localhost:8080/members3
