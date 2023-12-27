@@ -95,7 +95,7 @@ class MemberJpaRepositoryTest {
         memberJpaRepository.save(Member.builder().username("member7").age(10).build());
 
         int age = 10;
-        int offset =0;
+        int offset = 0;
         int limit = 3;
 
         // when
@@ -106,4 +106,23 @@ class MemberJpaRepositoryTest {
         assertEquals(3, members.size());
         assertEquals(7, totalCount);
     }
+
+    @Test
+    void bulkUpdate() {
+        // given
+        memberJpaRepository.save(Member.builder().username("member1").age(10).build());
+        memberJpaRepository.save(Member.builder().username("member2").age(18).build());
+        memberJpaRepository.save(Member.builder().username("member3").age(20).build());
+        memberJpaRepository.save(Member.builder().username("member4").age(21).build());
+        memberJpaRepository.save(Member.builder().username("member5").age(40).build());
+        memberJpaRepository.save(Member.builder().username("member6").age(19).build());
+        memberJpaRepository.save(Member.builder().username("member7").age(17).build());
+
+        // when
+        int result = memberJpaRepository.bulkAgePlus(20);
+
+        // then
+        assertEquals(3, result);
+    }
+
 }

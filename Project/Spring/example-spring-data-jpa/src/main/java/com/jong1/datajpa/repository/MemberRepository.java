@@ -6,6 +6,7 @@ import com.jong1.datajpa.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -17,20 +18,22 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     /**
      * limit는 Spring Data JPA Docs확인
+     *
      * @return
      */
     List<Member> findTop3By();
 
     /**
-     * @Param을 작성하는 이유는 NamedQuery를 사용할 때, 파라미터를 바인딩할 때 사용한다.
      * @param username
      * @return
+     * @Param을 작성하는 이유는 NamedQuery를 사용할 때, 파라미터를 바인딩할 때 사용한다.
      */
     @Query(name = "Member.findByUsername")
     List<Member> findByUsername(@Param("username") String username);
 
     /**
      * Repository에서 직접 쿼리를 저의하는 방법
+     *
      * @param username
      * @param age
      * @return
@@ -46,6 +49,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     /**
      * 두개다 가능하다, 컬렉션 파라미터 바인딩
+     *
      * @param names
      * @return
      */
@@ -57,6 +61,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     /**
      * CountQuery를 분리하는 방법
+     *
      * @param age
      * @param pageable
      * @return
@@ -64,4 +69,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(value = "select m from Member m left join m.team t",
             countQuery = "select count(m) from Member m")
     Page<Member> findByAge(int age, Pageable pageable);
+
+    // @Modifying이 존재해야 update, delete가 가능하다.
+    // clearAutomaticcally는 영속성 컨텍스트를 자동으로 초기화해준다.
+//    @Modifying
+    @Modifying(clearAutomatically = true)
+    @Query("update Member m set m.age=m.age+1 where m.age >= :age")
+    int bulkAgePlus(@Param("age") int age);
 }

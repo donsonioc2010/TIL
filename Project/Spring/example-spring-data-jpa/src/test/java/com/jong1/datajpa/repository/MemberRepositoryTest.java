@@ -211,4 +211,27 @@ class MemberRepositoryTest {
         // Page내부의 결과를 변경하는방법
         members.map(member -> new MemberDto(member.getId(), member.getUsername(), null)).forEach(System.out::println);
     }
+
+    @Test
+    void bulkUpdate() {
+        // given
+        memberRepository.save(Member.builder().username("member1").age(10).build());
+        memberRepository.save(Member.builder().username("member2").age(18).build());
+        memberRepository.save(Member.builder().username("member3").age(20).build());
+        memberRepository.save(Member.builder().username("member4").age(21).build());
+        memberRepository.save(Member.builder().username("member5").age(40).build());
+        memberRepository.save(Member.builder().username("member6").age(19).build());
+        memberRepository.save(Member.builder().username("member7").age(17).build());
+
+        // when
+        int result = memberRepository.bulkAgePlus(20);
+
+        // bulk연산은 영속성 컨텍스트를 무시하고 DB에 직접 쿼리를 날린다. 그러다보니 영속성 컨텍스트에 보관중인 객체들이 DB와 다른 값을 가지게 된다.
+        List<Member> findMember = memberRepository.findByUsername("member5");
+        Member member5 = findMember.get(0);
+        System.out.println("member5 = " + member5);
+
+        // then
+        assertEquals(3, result);
+    }
 }
