@@ -267,4 +267,33 @@ class MemberRepositoryTest {
 
         // then
     }
+
+    @Test
+    void queryHint() {
+        // given
+        Member member1 = memberRepository.save(Member.builder().username("member1").age(10).build());
+        em.flush();
+        em.clear();
+
+        // when
+        Member findMember = memberRepository.findReadOnlyByUsername("member1");
+        //변경감지가 되지 않는다, 영속성 컨텍스트에 비교할 객체를 복사해두지 않기 떄문에, 불가함
+        findMember.setUsername("member2");
+
+        em.flush();
+        // then
+    }
+
+
+    @Test
+    void lock() {
+        // given
+        Member member1 = memberRepository.save(Member.builder().username("member1").age(10).build());
+        em.flush();
+        em.clear();
+
+        // when DB의 Lock?
+        List<Member> findMember = memberRepository.findLockByUsername("member1");
+        // then
+    }
 }
