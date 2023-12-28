@@ -52,9 +52,7 @@ public class QuerydslBasicTest {
 
     @Test
     void startQuerydsl() {
-        //동일하다
-        //QMember m = new QMember("m");
-        QMember m = QMember.member;
+        QMember m = new QMember("m"); //같은 테이블을 조인해야 할 경우에만 다른 Variable로 생성해 사용한다.
         Member findMember = queryFactory
                 .select(m)
                 .from(m)
@@ -64,4 +62,14 @@ public class QuerydslBasicTest {
         assertEquals(findMember.getUsername(), "member1");
     }
 
+    @Test
+    void startQuerydsl2() {
+        Member findMember = queryFactory
+                .select(QMember.member)
+                .from(QMember.member)
+                .where(QMember.member.username.eq("member1")) // 파라미터 바인딩 처리
+                .fetchOne();
+
+        assertEquals(findMember.getUsername(), "member1");
+    }
 }
