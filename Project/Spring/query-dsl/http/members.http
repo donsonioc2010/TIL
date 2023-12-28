@@ -1,0 +1,12 @@
+### 전체 조회
+GET http://localhost:8080/v1/members
+
+### 팀명조회
+GET http://localhost:8080/v1/members?teamName=teamA
+
+### 나이추가
+GET http://localhost:8080/v1/members?teamName=teamA&ageGoe=31&ageLoe=35
+
+### 이름추가
+GET http://localhost:8080/v1/members?teamName=teamB&ageGoe=31&ageLoe=35&username=member31
+
