@@ -69,3 +69,8 @@
 또한, Projections의 Constructor방식과 차이점은 Constructor방식은 Compile오류를 잡을 수 없으나, `@QueryProjection`은 컴파일 오류를 잡을 수 있다.
 
 단점은, Dto에서 `@QueryProjection`을 사용하기 전에는 의존이 없었으나, `@QueryProjection`을 사용하면 Dto가 Querydsl에 의존하게 된다.
+
+## SQL Function
+> [!WARNING]
+> SQL Function은 JPA와 Dialect에 등록된 내용만 호출이 가능하다  
+> JPQL, QueryDSL에서도 호출이 가능하다

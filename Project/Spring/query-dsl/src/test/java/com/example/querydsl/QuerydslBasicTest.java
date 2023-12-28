@@ -767,18 +767,60 @@ public class QuerydslBasicTest {
                 .set(QMember.member.age, QMember.member.age.add(-1))
                 .execute();
     }
+
     @Test
     void bulkMultiple() {
         long count = queryFactory
                 .update(QMember.member)
                 .set(QMember.member.age, QMember.member.age.multiply(2))
                 .execute();
-    } @Test
+    }
+
+    @Test
     void bulkDelete() {
         long count = queryFactory
                 .delete(QMember.member)
                 .where(QMember.member.age.gt(18))
                 .execute();
+    }
+
+    @Test
+    void sqlFunction() {
+        List<String> result = queryFactory
+                .select(
+                        Expressions
+                                .stringTemplate(
+                                        "function ( 'replace', {0} , {1} , {2} )"
+                                        , QMember.member.username
+                                        , "member"
+                                        , "M"
+                                )
+                )
+                .from(QMember.member)
+                .fetch();
+
+        result.forEach(System.out::println);
+    }
+
+
+    @Test
+    void sqlFunction2() {
+        List<String> result = queryFactory
+                .select(QMember.member.username)
+                .from(QMember.member)
+/*                .where(
+                        QMember.member.username.eq(
+                                Expressions
+                                        .stringTemplate(
+                                                "function ( 'lower', {0} )"
+                                                , QMember.member.username
+                                        )
+                        )
+                )*/
+                .where(QMember.member.username.eq(QMember.member.username.lower()))
+                .fetch();
+
+        result.forEach(System.out::println);
     }
 
 }
