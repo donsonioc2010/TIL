@@ -7,6 +7,8 @@ import com.example.querydsl.entity.Team;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceUnit;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
@@ -302,6 +306,40 @@ public class QuerydslBasicTest {
                 .fetch();
 
         result.forEach(System.out::println);
+    }
 
+
+    @PersistenceUnit
+    EntityManagerFactory emf;
+
+    @Test
+    void fetchJoinNo() {
+        em.flush();
+        em.clear();
+
+        Member findMember = queryFactory
+                .selectFrom(QMember.member)
+                .where(QMember.member.username.eq("member1"))
+                .fetchOne();
+
+        // fetch join을 하지 않으면 Lazy Loading으로 인해 Team을 가져오지 않는다.
+        // getPersistenceUnitUtil.isLoaded()를 통해 Lazy Loading 여부를 확인할 수 있다.
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertFalse(loaded);
+    }
+
+    @Test
+    void fetchJoinUse() {
+        em.flush();
+        em.clear();
+
+        Member findMember = queryFactory
+                .selectFrom(QMember.member)
+                .join(QMember.member.team, QTeam.team).fetchJoin()
+                .where(QMember.member.username.eq("member1"))
+                .fetchOne();
+
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertTrue(loaded);
     }
 }
