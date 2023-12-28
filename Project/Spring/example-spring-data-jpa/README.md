@@ -42,3 +42,5 @@
 ## Paging의 기본설정
 - `spring.data.web.pageable.default-page-size=20` 기본페이지 설정 (글로벌설정)
 - `spring.data.web.pageable.max-page-size=2000` 최대페이지 설정
+
+## Native Query

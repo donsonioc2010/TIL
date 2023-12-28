@@ -371,4 +371,53 @@ class MemberRepositoryTest {
         result.forEach(u -> System.out.println("u = " + u.getUsername()));
     }
 
+    @Test
+    void nativeQuery() {
+        // given
+        Team teamA = Team.builder().name("teamA").build();
+        Team teamB = Team.builder().name("teamB").build();
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        Member member1 = Member.builder().username("member1").age(10).team(teamA).build();
+        Member member2 = Member.builder().username("member2").age(10).team(teamB).build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        // when
+        Member result = memberRepository.findByNativeQuery("member1");
+        System.out.println("result = " + result);
+
+        // then
+    }
+
+    @Test
+    void nativeQuery2() {
+        // given
+        Team teamA = Team.builder().name("teamA").build();
+        Team teamB = Team.builder().name("teamB").build();
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        Member member1 = Member.builder().username("member1").age(10).team(teamA).build();
+        Member member2 = Member.builder().username("member2").age(10).team(teamB).build();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        // when
+        Page<MemberProjection> result = memberRepository.findByNativeProjection(PageRequest.of(0, 10));
+        List<MemberProjection> content = result.getContent();
+        content.forEach(m -> {
+            System.out.println("m.getUsername() = " + m.getUsername());
+            System.out.println("m.getTeamName() = " + m.getTeamName());
+        });
+        // then
+    }
+
 }
