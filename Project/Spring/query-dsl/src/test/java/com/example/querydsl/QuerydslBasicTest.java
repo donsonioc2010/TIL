@@ -152,4 +152,35 @@ public class QuerydslBasicTest {
                     System.out.println("m = " + m);
                 });
     }
+
+    @Test
+    void paging1() {
+        List<Member> result = queryFactory.selectFrom(QMember.member)
+                .orderBy(QMember.member.username.desc())
+                .offset(1)
+                .limit(2)
+                .fetch();
+
+        assertEquals(result.size(), 2);
+        result.forEach(System.out::println);
+    }
+
+    @Test
+    void paging2() {
+        List<Member> result = queryFactory.selectFrom(QMember.member)
+                .orderBy(QMember.member.username.desc())
+                .offset(1)
+                .limit(2)
+                .fetch();
+
+        Long totalCount = queryFactory
+                //.select(Wildcard.count) //select count(*)
+                .select(QMember.member.count()) //select count(member.id)
+                .from(QMember.member)
+                .fetchOne();
+
+
+        assertEquals(result.size(), 2);
+        assertEquals(totalCount, 4);
+    }
 }
