@@ -11,6 +11,7 @@ import com.example.querydsl.entity.Team;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
@@ -679,7 +680,7 @@ public class QuerydslBasicTest {
 
 
     @Test
-    void dynamicQuery_BoleanBuilder() {
+    void dynamicQuery_BooleanBuilder() {
         String usernameParam = "member1";
         Integer ageParam = 10;
 
@@ -689,10 +690,10 @@ public class QuerydslBasicTest {
 
     private List<Member> searchMember1(String usernameCond, Integer ageCond) {
         BooleanBuilder builder = new BooleanBuilder();
-        if(usernameCond != null) {
+        if (usernameCond != null) {
             builder.and(QMember.member.username.eq(usernameCond));
         }
-        if(ageCond != null) {
+        if (ageCond != null) {
             builder.and(QMember.member.age.eq(ageCond));
         }
 
@@ -701,4 +702,35 @@ public class QuerydslBasicTest {
                 .where(builder)
                 .fetch();
     }
+
+    @Test
+    void dynamicQuery_WhereParam() {
+        String usernameParam = "member1";
+        Integer ageParam = 10;
+
+        List<Member> result = searchMember2(usernameParam, ageParam);
+        assertEquals(result.size(), 1);
+    }
+
+    /**
+     * where 조건에 null이 들어가면 무시된다.
+     * @param usernameCond
+     * @param ageCond
+     * @return
+     */
+    private List<Member> searchMember2(String usernameCond, Integer ageCond) {
+        return queryFactory
+                .selectFrom(QMember.member)
+                .where(usernameEq(usernameCond), ageEq(ageCond))
+                .fetch();
+    }
+
+    private Predicate ageEq(Integer ageCond) {
+        return ageCond == null ? null : QMember.member.age.eq(ageCond);
+    }
+
+    private Predicate usernameEq(String usernameCond) {
+        return usernameCond == null ? null : QMember.member.username.eq(usernameCond);
+    }
+
 }
