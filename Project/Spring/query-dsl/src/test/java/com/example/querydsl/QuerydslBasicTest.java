@@ -128,7 +128,28 @@ public class QuerydslBasicTest {
                 .from(QMember.member)
                 .fetchOne();
         System.out.println("totalCount = " + totalCount);
+    }
 
+    /**
+     * 회원 정렬 순서
+     * 1. 회원 나이 내림차순(desc)
+     * 2. 회원 이름 올림차순(asc)
+     * 단, 2에서 회원 이름이 없으면 마지막에 출력(nulls last)
+     */
+    @Test
+    void sort() {
+        em.persist(new Member(null, 100));
+        em.persist(new Member("member5", 100));
+        em.persist(new Member("member6", 100));
 
+        queryFactory.select(QMember.member)
+                .from(QMember.member)
+                .orderBy(
+                        QMember.member.age.desc(),
+                        QMember.member.username.asc().nullsLast())
+                .fetch()
+                .forEach(m -> {
+                    System.out.println("m = " + m);
+                });
     }
 }
