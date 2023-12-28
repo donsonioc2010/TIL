@@ -714,6 +714,7 @@ public class QuerydslBasicTest {
 
     /**
      * where 조건에 null이 들어가면 무시된다.
+     *
      * @param usernameCond
      * @param ageCond
      * @return
@@ -731,6 +732,53 @@ public class QuerydslBasicTest {
 
     private Predicate usernameEq(String usernameCond) {
         return usernameCond == null ? null : QMember.member.username.eq(usernameCond);
+    }
+
+    @Test
+    void bulkUpdate() {
+        long count = queryFactory
+                .update(QMember.member)
+                .set(QMember.member.username, "비회원")
+                .where(QMember.member.age.lt(28))
+                .execute();
+
+        em.flush();
+        em.clear();
+
+        // 벌크 연산은 영속성 컨텍스트를 무시하고 DB에 직접 쿼리를 날린다.
+        // 따라서 영속성 컨텍스트에 있는 데이터와 DB에 있는 데이터가 다를 수 있다.
+        List<Member> result = queryFactory
+                .selectFrom(QMember.member)
+                .fetch();
+    }
+
+    @Test
+    void bulkAdd() {
+        long count = queryFactory
+                .update(QMember.member)
+                .set(QMember.member.age, QMember.member.age.add(1))
+                .execute();
+    }
+
+    @Test
+    void bulkMinus() {
+        long count = queryFactory
+                .update(QMember.member)
+                .set(QMember.member.age, QMember.member.age.add(-1))
+                .execute();
+    }
+    @Test
+    void bulkMultiple() {
+        long count = queryFactory
+                .update(QMember.member)
+                .set(QMember.member.age, QMember.member.age.multiply(2))
+                .execute();
+    } @Test
+    void bulkDelete() {
+        long count = queryFactory
+                .delete(QMember.member)
+                .where(QMember.member.age.gt(18))
+                .execute();
     }
 
 }
