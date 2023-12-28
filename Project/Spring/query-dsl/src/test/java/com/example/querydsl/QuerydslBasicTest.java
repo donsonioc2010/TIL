@@ -2,7 +2,9 @@ package com.example.querydsl;
 
 import com.example.querydsl.entity.Member;
 import com.example.querydsl.entity.QMember;
+import com.example.querydsl.entity.QTeam;
 import com.example.querydsl.entity.Team;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -105,7 +107,7 @@ public class QuerydslBasicTest {
     void resultFetch() {
         List<Member> fetch = queryFactory.selectFrom(QMember.member)
                 .fetch();
-        
+
         Member member = queryFactory.selectFrom(QMember.member)
                 .fetchOne();
 
@@ -182,5 +184,46 @@ public class QuerydslBasicTest {
 
         assertEquals(result.size(), 2);
         assertEquals(totalCount, 4);
+    }
+
+    // 집합
+    @Test
+    void aggregation() {
+        Tuple result = queryFactory.select(
+                        QMember.member.count(),
+                        QMember.member.age.sum(),
+                        QMember.member.age.avg(),
+                        QMember.member.age.max(),
+                        QMember.member.age.min()
+                ).from(QMember.member)
+                .fetchOne();
+
+        assertEquals(result.get(QMember.member.count()), 4);
+        assertEquals(result.get(QMember.member.age.sum()), 100);
+        assertEquals(result.get(QMember.member.age.avg()), 25);
+        assertEquals(result.get(QMember.member.age.max()), 40);
+    }
+
+    /**
+     * 팀의 이름과 각 팀의 평균 연령을 구해라.
+     */
+    @Test
+    void group() {
+        List<Tuple> result = queryFactory
+                .select(QTeam.team.name, QMember.member.age.avg())
+                .from(QMember.member)
+                .join(QMember.member.team, QTeam.team)
+                .groupBy(QTeam.team.name)
+//                .having(QMember.member.age.avg().gt(10)) //가능
+                .fetch();
+
+        Tuple teamA = result.get(0);
+        Tuple teamB = result.get(1);
+
+        assertEquals(teamA.get(QTeam.team.name), "teamA");
+        assertEquals(teamA.get(QMember.member.age.avg()), 15);
+
+        assertEquals(teamB.get(QTeam.team.name), "teamB");
+        assertEquals(teamB.get(QMember.member.age.avg()), 35);
     }
 }

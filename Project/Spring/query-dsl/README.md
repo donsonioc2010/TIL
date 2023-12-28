@@ -1,4 +1,6 @@
 # README
+> [!NOTE]
+> 인프런의 - [실전! Querydsl](https://www.inflearn.com/course/querydsl-%EC%8B%A4%EC%A0%84/dashboard) 강의를 듣고 정리한 내용입니다.
 
 ## JPA Query Factory
 
