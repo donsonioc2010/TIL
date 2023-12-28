@@ -18,10 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class QuerydslBasicTest {
     @Autowired
     private EntityManager em;
-    private JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+    private JPAQueryFactory queryFactory;
 
     @BeforeEach
     void before() {
+        queryFactory = new JPAQueryFactory(em);
         Team teamA = new Team("teamA");
         Team teamB = new Team("teamB");
         em.persist(teamA);
@@ -68,6 +69,31 @@ public class QuerydslBasicTest {
                 .select(QMember.member)
                 .from(QMember.member)
                 .where(QMember.member.username.eq("member1")) // 파라미터 바인딩 처리
+                .fetchOne();
+
+        assertEquals(findMember.getUsername(), "member1");
+    }
+
+    @Test
+    void search() {
+        Member findMember = queryFactory.select(QMember.member)
+                .from(QMember.member)
+                .where(
+                        QMember.member.username.eq("member1")
+                                .and(QMember.member.age.eq(10)))
+                .fetchOne();
+
+        assertEquals(findMember.getUsername(), "member1");
+    }
+
+    @Test
+    void searchAndParam() {
+        // ,으로 만 하는건 And조건의 연속이다, 또한 null은 무시된다.
+        Member findMember = queryFactory.select(QMember.member)
+                .from(QMember.member)
+                .where(
+                        QMember.member.username.eq("member1"),
+                        QMember.member.age.eq(10))
                 .fetchOne();
 
         assertEquals(findMember.getUsername(), "member1");
