@@ -1,10 +1,14 @@
 package com.example.querydsl;
 
+import com.example.querydsl.dto.MemberDto;
+import com.example.querydsl.dto.UserDto;
 import com.example.querydsl.entity.Member;
 import com.example.querydsl.entity.QMember;
 import com.example.querydsl.entity.QTeam;
 import com.example.querydsl.entity.Team;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
@@ -488,5 +492,169 @@ public class QuerydslBasicTest {
         member4_40
          */
         result.forEach(System.out::println);
+    }
+
+    @Test
+    void simpleProjection() {
+        List<String> result = queryFactory
+                .select(QMember.member.username)
+                .from(QMember.member)
+                .fetch();
+
+        result.forEach(System.out::println);
+    }
+
+    @Test
+    void tupleProjection() {
+        List<Tuple> result = queryFactory
+                .select(QMember.member.username, QMember.member.age)
+                .from(QMember.member)
+                .fetch();
+
+        result.forEach(tuple -> {
+            String username = tuple.get(QMember.member.username);
+            Integer age = tuple.get(QMember.member.age);
+            System.out.println("username = " + username);
+            System.out.println("age = " + age);
+        });
+    }
+
+    /**
+     * JPQL에서 DTO로 바로 조회
+     */
+    @Test
+    void findDtoByJPQL() {
+        List<MemberDto> resultList = em.createQuery("select new com.example.querydsl.dto.MemberDto(m.username, m.age) from Member m", MemberDto.class)
+                .getResultList();
+
+        resultList.forEach(System.out::println);
+    }
+
+    /**
+     * bean은 setter를 통해 값을 주입한다는 의미이다.
+     */
+    @Test
+    void findDtoWithQuerydslBySetter() {
+        //bean의 의미는 setter를 통해 값을 주입한다는 의미이다.
+        //기본 생성자는 필수이다.
+        List<MemberDto> result = queryFactory
+                .select(
+                        Projections.bean(MemberDto.class,
+                                QMember.member.username,
+                                QMember.member.age
+                        )
+                ).from(QMember.member)
+                .fetch();
+        result.forEach(System.out::println);
+    }
+
+    /**
+     * field의 경우에는 Getter와 Setter가 없어도 된다.
+     */
+    @Test
+    void findDtoWithQuerydslByFields() {
+        //기본 생성자는 필수이다.
+        List<MemberDto> result = queryFactory
+                .select(
+                        Projections.fields(MemberDto.class,
+                                QMember.member.username,
+                                QMember.member.age
+                        )
+                ).from(QMember.member)
+                .fetch();
+        result.forEach(System.out::println);
+    }
+
+    /**
+     * 생성자의 경우에는 타입이 일치하는 생성자가 필요하다.
+     */
+    @Test
+    void findDtoWithQuerydslByConstructor() {
+        //기본 생성자는 필수이다.
+        List<MemberDto> result = queryFactory
+                .select(
+                        Projections.constructor(MemberDto.class,
+                                QMember.member.username,
+                                QMember.member.age
+                        )
+                ).from(QMember.member)
+                .fetch();
+        result.forEach(System.out::println);
+    }
+
+    /**
+     * 파라미터의 명칭이 다른 경우, bean과 field방식은 null로 주입이 된다.
+     * 변경은 as를 통해 가능하다.
+     */
+    @Test
+    void findUserDto() {
+
+        //기본 생성자는 필수이다.
+        List<UserDto> result = queryFactory
+                .select(
+                        Projections.bean(UserDto.class,
+                                QMember.member.username.as("name"),
+                                QMember.member.age
+                        )
+                ).from(QMember.member)
+                .fetch();
+
+        System.out.println("=======result1======");
+        result.forEach(System.out::println);
+
+        //기본 생성자는 필수이다.
+        List<UserDto> result2 = queryFactory
+                .select(
+                        Projections.fields(UserDto.class,
+                                QMember.member.username.as("name"),
+                                QMember.member.age
+                        )
+                ).from(QMember.member)
+                .fetch();
+
+        System.out.println("=======result42=====");
+        result2.forEach(System.out::println);
+
+        List<UserDto> result3 = queryFactory
+                .select(
+                        Projections.constructor(UserDto.class,
+                                QMember.member.username.as("name"),
+                                QMember.member.age
+                        )
+                ).from(QMember.member)
+                .fetch();
+
+        System.out.println("=======result3======");
+        result3.forEach(System.out::println);
+
+
+        QMember memberSub = new QMember("memberSub");
+        List<UserDto> result4 = queryFactory
+                .select(
+                        Projections.fields(
+                                UserDto.class,
+                                QMember.member.username.as("name"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .select(memberSub.member.age.max()).from(memberSub),
+                                        "age"
+                                )
+                        )
+                ).from(QMember.member)
+                .fetch();
+        System.out.println("=======result4======");
+        result4.forEach(System.out::println);
+
+        List<UserDto> result5 = queryFactory
+                .select(
+                        Projections.constructor(
+                                UserDto.class,
+                                QMember.member.username.as("name"),
+                                QMember.member.age
+                        )
+                ).from(QMember.member)
+                .fetch();
+        System.out.println("=======result5======");
+        result5.forEach(System.out::println);
     }
 }
