@@ -6,6 +6,7 @@ import com.example.querydsl.entity.QTeam;
 import com.example.querydsl.entity.Team;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -454,6 +455,38 @@ public class QuerydslBasicTest {
                 .from(QMember.member)
                 .fetch();
 
+        result.forEach(System.out::println);
+    }
+
+    @Test
+    void constant() {
+        // given
+        List<Tuple> result = queryFactory
+                .select(QMember.member.username, Expressions.constant("A"))
+                .from(QMember.member)
+                .fetch();
+        /* 결과
+        [member1, A]
+        [member2, A]
+        [member3, A]
+        [member4, A]
+         */
+        result.forEach(System.out::println);
+    }
+
+    @Test
+    void concat() {
+        // given
+        List<String> result = queryFactory
+                .select(QMember.member.username.concat("_").concat(QMember.member.age.stringValue()))
+                .from(QMember.member)
+                .fetch();
+        /* 결과
+        member1_10
+        member2_20
+        member3_30
+        member4_40
+         */
         result.forEach(System.out::println);
     }
 }
