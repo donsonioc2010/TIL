@@ -39,3 +39,8 @@
   - `Deprecated` 되었다.
   - [Deprecated의 이유](https://velog.io/@nestour95/QueryDsl-fetchResults%EA%B0%80-deprecated-%EB%90%9C-%EC%9D%B4%EC%9C%A0)
 - `fetchCount()` count 쿼리로 변경해서 count 수를 조회한다.
+
+
+## Join
+### 기본 조인
+> Join의 기본 문법은 `join(조인 대상, 별칭)`로 첫번째 파라미터에 조인 대상을 지정, 두번째 파라미터에 별칭으로 사용할 Q타입을 지정한다.
