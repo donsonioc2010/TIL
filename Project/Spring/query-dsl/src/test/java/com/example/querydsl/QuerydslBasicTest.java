@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -97,5 +99,36 @@ public class QuerydslBasicTest {
                 .fetchOne();
 
         assertEquals(findMember.getUsername(), "member1");
+    }
+
+    @Test
+    void resultFetch() {
+        List<Member> fetch = queryFactory.selectFrom(QMember.member)
+                .fetch();
+        
+        Member member = queryFactory.selectFrom(QMember.member)
+                .fetchOne();
+
+        Member member1 = queryFactory.selectFrom(QMember.member)
+                .fetchFirst();
+    }
+
+    @Test
+    void fetchResults_Deprecated() {
+        // Deprecated
+        // QueryResults<Member> results = queryFactory.selectFrom(QMember.member)
+        //         .fetchResults();
+        // long total = results.getTotal();
+        // List<Member> content = results.getResults();
+
+        // 변경
+        Long totalCount = queryFactory
+                //.select(Wildcard.count) //select count(*)
+                .select(QMember.member.count()) //select count(member.id)
+                .from(QMember.member)
+                .fetchOne();
+        System.out.println("totalCount = " + totalCount);
+
+
     }
 }

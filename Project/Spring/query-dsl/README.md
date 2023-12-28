@@ -24,3 +24,16 @@
 | like(String)            | like (example : "member%", "%member", "%member%") |
 | contains(String)        | like %value%                                      |
 | startsWith(String)      | like value%                                       |
+
+
+## 결과 조회
+- `fetch()` 리스트를 조회하며, 데이터가 없는 경우 빈 리스트를 반환한다.
+- `fetchOne()` 단건을 조회한다.
+  - 데이터가 없는 경우 `null`을 반환한다.
+  - 데이터가 둘 이상인 경우 `com.querydsl.core.NonUniqueResultException` 예외가 발생한다.
+- `fetchFirst()` 단건을 조회한다, `limit(1).fetchOne()`과 동일하다.
+  - 데이터가 없는 경우 `null`을 반환한다.
+- `fetchResults()` 페이징 정보를 포함한 `QueryResults`를 반환한다.
+  - `Deprecated` 되었다.
+  - [Deprecated의 이유](https://velog.io/@nestour95/QueryDsl-fetchResults%EA%B0%80-deprecated-%EB%90%9C-%EC%9D%B4%EC%9C%A0)
+- `fetchCount()` count 쿼리로 변경해서 count 수를 조회한다.
