@@ -1,6 +1,8 @@
 package com.example.querydsl;
 
 import com.example.querydsl.dto.MemberDto;
+import com.example.querydsl.dto.MemberDto2;
+import com.example.querydsl.dto.QMemberDto2;
 import com.example.querydsl.dto.UserDto;
 import com.example.querydsl.entity.Member;
 import com.example.querydsl.entity.QMember;
@@ -121,6 +123,7 @@ public class QuerydslBasicTest {
                 .fetch();
 
         Member member = queryFactory.selectFrom(QMember.member)
+                .where(QMember.member.username.eq("member1"))
                 .fetchOne();
 
         Member member1 = queryFactory.selectFrom(QMember.member)
@@ -656,5 +659,20 @@ public class QuerydslBasicTest {
                 .fetch();
         System.out.println("=======result5======");
         result5.forEach(System.out::println);
+    }
+
+    @Test
+    void findDtoByQueryProjection() {
+        List<MemberDto2> result = queryFactory
+                .select(
+                        new QMemberDto2(
+                                QMember.member.username,
+                                QMember.member.age
+                        )
+                )
+                .from(QMember.member)
+                .fetch();
+
+        result.forEach(System.out::println);
     }
 }

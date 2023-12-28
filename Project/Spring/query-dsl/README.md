@@ -65,3 +65,7 @@
 - nativeSQL을 사용한다.
 
 ## 프로젝션
+`@QueryProjection`을 사용하면 DTO를 사용하지 않고도 프로젝션을 할 수 있다.
+또한, Projections의 Constructor방식과 차이점은 Constructor방식은 Compile오류를 잡을 수 없으나, `@QueryProjection`은 컴파일 오류를 잡을 수 있다.
+
+단점은, Dto에서 `@QueryProjection`을 사용하기 전에는 의존이 없었으나, `@QueryProjection`을 사용하면 Dto가 Querydsl에 의존하게 된다.
