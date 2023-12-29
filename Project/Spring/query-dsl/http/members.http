@@ -1,3 +1,4 @@
+# V1
 ### 전체 조회
 GET http://localhost:8080/v1/members
 
@@ -9,4 +10,26 @@ GET http://localhost:8080/v1/members?teamName=teamA&ageGoe=31&ageLoe=35
 
 ### 이름추가
 GET http://localhost:8080/v1/members?teamName=teamB&ageGoe=31&ageLoe=35&username=member31
+
+
+# V2
+### 기본 조회
+GET http://localhost:8080/v2/members
+
+### 페이징 조회
+GET http://localhost:8080/v2/members?page=3
+
+### 페이징 조회 + Size
+GET http://localhost:8080/v2/members?page=3&size=10
+
+
+# V3
+### 기본 조회
+GET http://localhost:8080/v3/members
+
+### 페이징 조회
+GET http://localhost:8080/v3/members?page=3
+
+### 페이징 조회 + Size
+GET http://localhost:8080/v3/members?page=3&size=10
 
