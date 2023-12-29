@@ -1,7 +1,6 @@
 .DS_Store
 ReferenceCollector.md
 
-.idea
 .gradle
 build/
 .project
