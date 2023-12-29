@@ -3,6 +3,7 @@ package com.example.querydsl.repository;
 import com.example.querydsl.dto.MemberSearchCondition;
 import com.example.querydsl.dto.MemberTeamDto;
 import com.example.querydsl.entity.Member;
+import com.example.querydsl.entity.QMember;
 import com.example.querydsl.entity.Team;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
@@ -96,5 +97,30 @@ class MemberRepositoryTest {
                 .extracting("username")
                 .containsExactly("member1", "member2", "member3");
 
+    }
+
+    /**
+     * Join이 불가능하다
+     * 또한 Client(Service Layer)가 Querydsl을 의존해버리게 된다.
+     * 그래서 사용을 권장하진 않음.
+     */
+    @Test
+    void querydslPredicateExecutorTest() {
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member member1 = new Member("member1", 10, teamA);
+        Member member2 = new Member("member2", 20, teamA);
+
+        em.persist(member1);
+        em.persist(member2);
+
+        Iterable<Member> result = memberRepository.findAll(
+                QMember.member.age.between(10, 40)
+                        .and(QMember.member.username.eq("member1"))
+        );
+        for (Member findMember : result) {
+            System.out.println("findMember = " + findMember);
+        }
     }
 }
