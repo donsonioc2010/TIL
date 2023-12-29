@@ -3,12 +3,14 @@ package com.example.querydsl.repository;
 import com.example.querydsl.dto.MemberSearchCondition;
 import com.example.querydsl.dto.MemberTeamDto;
 import com.example.querydsl.dto.QMemberTeamDto;
+import com.example.querydsl.entity.Member;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
@@ -21,11 +23,81 @@ import static org.springframework.util.StringUtils.hasText;
  * 끝나는건 꼭 Impl로 끝나야 한다. (설정을 통한 변경은 가능하나 귀찮으며, 이렇게 하는게 편하다. (Default=Impl))
  * 시작 어문은 무조건 Interface를 상속하려는 Repository 이름으로 시작해야 한다. (MemberRepository)
  * 즉 {상속받으려는 Repository 이름} + {...} + {Impl} 이어야 한다.
+ *
+ * QuerydslRepositorySupport의 단점은 Sort가 오류가 발생한다
+ * 3.x버전 을 대상으로 제작되었다
  */
-@RequiredArgsConstructor
-public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
+public class MemberRepositoryCustomImpl extends QuerydslRepositorySupport implements MemberRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+
+    public MemberRepositoryCustomImpl(JPAQueryFactory queryFactory) {
+        super(Member.class);
+        this.queryFactory = queryFactory;
+    }
+
+    private List<MemberTeamDto> extendsSearchWithFrom(MemberSearchCondition condition) {
+        return from(member)
+                .leftJoin(member.team, team)
+                .where(
+                        usernameEq(condition.getUsername()),
+                        teamNameEq(condition.getTeamName()),
+                        ageGoe(condition.getAgeGoe()),
+                        ageLoe(condition.getAgeLoe())
+                ).select(new QMemberTeamDto(
+                        member.id.as("memberId"),
+                        member.username,
+                        member.age,
+                        team.id.as("teamId"),
+                        team.name.as("teamName")
+                )).fetch();
+    }
+
+    private Page<MemberTeamDto> extendsSearchPageSimpleWithFrom(MemberSearchCondition condition, Pageable pageable) {
+
+        JPQLQuery<MemberTeamDto> jpaQuery = from(member)
+                .leftJoin(member.team, team)
+                .where(
+                        usernameEq(condition.getUsername()),
+                        teamNameEq(condition.getTeamName()),
+                        ageGoe(condition.getAgeGoe()),
+                        ageLoe(condition.getAgeLoe())
+                )
+                .select(new QMemberTeamDto(
+                        member.id.as("memberId"),
+                        member.username,
+                        member.age,
+                        team.id.as("teamId"),
+                        team.name.as("teamName")
+                ));
+        List<MemberTeamDto> content = getQuerydsl().applyPagination(pageable, jpaQuery).fetch();
+        JPAQuery<Long> countQuery = queryFactory
+                .select(member.count())
+                .from(member)
+                .leftJoin(member.team, team)
+                .where(
+                        usernameEq(condition.getUsername()),
+                        teamNameEq(condition.getTeamName()),
+                        ageGoe(condition.getAgeGoe()),
+                        ageLoe(condition.getAgeLoe())
+                );
+
+        Long total = queryFactory
+                .select(member.count())
+                .from(member)
+                .leftJoin(member.team, team)
+                .where(
+                        usernameEq(condition.getUsername()),
+                        teamNameEq(condition.getTeamName()),
+                        ageGoe(condition.getAgeGoe()),
+                        ageLoe(condition.getAgeLoe())
+                )
+                .fetchOne();
+
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+//        return new PageImpl<>(content, pageable, total);
+    }
 
     public List<MemberTeamDto> search(MemberSearchCondition condition) {
         return queryFactory
