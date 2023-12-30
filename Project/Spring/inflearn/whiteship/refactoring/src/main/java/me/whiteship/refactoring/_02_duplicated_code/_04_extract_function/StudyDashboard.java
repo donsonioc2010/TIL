@@ -10,32 +10,36 @@ import java.util.Set;
 
 public class StudyDashboard {
 
-    private void printParticipants(int eventId) throws IOException {
+    private static GHIssue getGhIssue(int eventId) throws IOException {
         // Get github issue to check homework
         GitHub gitHub = GitHub.connect();
         GHRepository repository = gitHub.getRepository("whiteship/live-study");
         GHIssue issue = repository.getIssue(eventId);
+        return issue;
+    }
 
+    private static Set<String> getUsername(GHIssue issue) throws IOException {
         // Get participants
-        Set<String> participants = new HashSet<>();
-        issue.getComments().forEach(c -> participants.add(c.getUserName()));
+        Set<String> usernames = new HashSet<>();
+        issue.getComments().forEach(c -> usernames.add(c.getUserName()));
+        return usernames;
+    }
 
+    private static void printUsernames(Set<String> participants) {
         // Print participants
         participants.forEach(System.out::println);
     }
 
+    private void printParticipants(int eventId) throws IOException {
+        GHIssue issue = getGhIssue(eventId);
+        Set<String> reviewers = getUsername(issue);
+        printUsernames(reviewers);
+    }
+
     private void printReviewers() throws IOException {
-        // Get github issue to check reviews
-        GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("whiteship/live-study");
-        GHIssue issue = repository.getIssue(30);
-
-        // Get reviewers
-        Set<String> reviewers = new HashSet<>();
-        issue.getComments().forEach(c -> reviewers.add(c.getUserName()));
-
-        // Print reviewers
-        reviewers.forEach(System.out::println);
+        GHIssue issue = getGhIssue(30);
+        Set<String> reviewers = getUsername(issue);
+        printUsernames(reviewers);
     }
 
     public static void main(String[] args) throws IOException {
