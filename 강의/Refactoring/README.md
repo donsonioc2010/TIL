@@ -8,3 +8,4 @@
 | Chapter2 | [중복 코드 (Duplicated Code)](./Chapter2.md)           |
 | Chapter3 | [긴 함수(Long Function)](./Chapter3.md)                |
 | Chapter4 | [긴 매개변수 목록(Long Parameter List)](./Chapter4.md) |
+| Chapter5 | [전역 데이터(Global Data)](./Chapter5.md)              |
