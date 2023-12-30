@@ -22,8 +22,8 @@ public class StudyDashboard {
 
     public StudyDashboard(int totalNumberOfEvents) {
         this.totalNumberOfEvents = totalNumberOfEvents;
-        participants = new CopyOnWriteArrayList<>();
-        firstParticipantsForEachEvent = new Participant[this.totalNumberOfEvents];
+        this.participants = new CopyOnWriteArrayList<>();
+        this.firstParticipantsForEachEvent = new Participant[this.totalNumberOfEvents];
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -32,46 +32,54 @@ public class StudyDashboard {
     }
 
     private void print() throws IOException, InterruptedException {
-        GHRepository ghRepository = getGhRepository();
+        checkGithubIssues(getGhRepository());
+        new StudyPrinter(this.totalNumberOfEvents, this.participants).execute();
+        printFirstParticipants();
+    }
 
+    private void checkGithubIssues(GHRepository ghRepository) throws InterruptedException {
         ExecutorService service = Executors.newFixedThreadPool(8);
-        CountDownLatch latch = new CountDownLatch(totalNumberOfEvents);
+        CountDownLatch latch = new CountDownLatch(this.totalNumberOfEvents);
 
-        for (int index = 1 ; index <= totalNumberOfEvents ; index++) {
+        for (int index = 1 ; index <= this.totalNumberOfEvents ; index++) {
             int eventId = index;
-            service.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        GHIssue issue = ghRepository.getIssue(eventId);
-                        List<GHIssueComment> comments = issue.getComments();
-                        Date firstCreatedAt = null;
-                        Participant first = null;
+            service.execute(() -> {
+                try {
+                    GHIssue issue = ghRepository.getIssue(eventId);
+                    List<GHIssueComment> comments = issue.getComments();
 
-                        for (GHIssueComment comment : comments) {
-                            Participant participant = findParticipant(comment.getUserName(), participants);
-                            participant.setHomeworkDone(eventId);
-
-                            if (firstCreatedAt == null || comment.getCreatedAt().before(firstCreatedAt)) {
-                                firstCreatedAt = comment.getCreatedAt();
-                                first = participant;
-                            }
-                        }
-
-                        firstParticipantsForEachEvent[eventId - 1] = first;
-                        latch.countDown();
-                    } catch (IOException e) {
-                        throw new IllegalArgumentException(e);
-                    }
+                    checkHomework(comments, eventId);
+                    firstParticipantsForEachEvent[eventId - 1] = findFirst(comments);
+                    latch.countDown();
+                } catch (IOException e) {
+                    throw new IllegalArgumentException(e);
                 }
             });
         }
 
         latch.await();
         service.shutdown();
+    }
 
-        new StudyPrinter(this.totalNumberOfEvents, this.participants).execute();
-        printFirstParticipants();
+    private Participant findFirst(List<GHIssueComment> comments) throws IOException {
+        Date firstCreatedAt = null;
+        Participant first = null;
+        for (GHIssueComment comment : comments) {
+            Participant participant = findParticipant(comment.getUserName());
+
+            if (firstCreatedAt == null || comment.getCreatedAt().before(firstCreatedAt)) {
+                firstCreatedAt = comment.getCreatedAt();
+                first = participant;
+            }
+        }
+        return first;
+    }
+
+    private void checkHomework(List<GHIssueComment> comments, int eventId) {
+        for (GHIssueComment comment : comments) {
+            Participant participant = findParticipant(comment.getUserName());
+            participant.setHomeworkDone(eventId);
+        }
     }
 
     private void printFirstParticipants() {
@@ -84,10 +92,10 @@ public class StudyDashboard {
         return repository;
     }
 
-    private Participant findParticipant(String username, List<Participant> participants) {
-        return isNewParticipant(username, participants) ?
-                createNewParticipant(username, participants) :
-                findExistingParticipant(username, participants);
+    private Participant findParticipant(String username) {
+        return isNewParticipant(username, this.participants) ?
+                createNewParticipant(username, this.participants) :
+                findExistingParticipant(username, this.participants);
     }
 
     private Participant findExistingParticipant(String username, List<Participant> participants) {
