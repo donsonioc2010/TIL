@@ -1,4 +1,4 @@
-# Chapter1-이해하기 힘든 이름
+# Chapter1-이해하기 힘든 이름(Mysterius Name)
 
 ## 개요
 
