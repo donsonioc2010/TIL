@@ -1,0 +1,5 @@
+# Default는 messages만 등록되어 messages.properties를 찾는다.
+# 이후 messages_{locale}.properties를 전부 찾을 수 있으며, 없는 경우 messages.properties를 찾는다.
+spring:
+  messages:
+    basename: messages, config.i18n.messages
