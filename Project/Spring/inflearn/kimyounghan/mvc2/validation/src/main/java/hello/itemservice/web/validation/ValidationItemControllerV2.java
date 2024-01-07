@@ -10,6 +10,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -24,6 +26,13 @@ import java.util.Map;
 public class ValidationItemControllerV2 {
 
     private final ItemRepository itemRepository;
+    private final ItemValidator itemValidator; // ItemValidator는 스프링 빈으로 등록되어 있기 때문에 @Autowired로 주입 가능
+
+    @InitBinder // 이 컨트롤러만 호출될 때마다 호출된다.
+    public void init(WebDataBinder dataBinder) {
+        // WebDataBinder는 스프링이 제공하는 인터페이스로, @InitBinder를 사용해서 컨트롤러 내에 @InitBinder를 사용한 메서드를 정의하면 해당 컨트롤러에 대한 요청이 올 때마다 WebDataBinder를 통해 바인딩할 객체를 생성한다.
+        dataBinder.addValidators(itemValidator); // WebDataBinder에 itemValidator를 추가
+    }
 
     @GetMapping
     public String items(Model model) {
@@ -150,7 +159,7 @@ public class ValidationItemControllerV2 {
         return "redirect:/validation/v2/items/{itemId}";
     }
 
-    @PostMapping("/add")
+//    @PostMapping("/add")
     public String addItemV4(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 
         log.info("objectName={}", bindingResult.getObjectName()); //target의 정보를 미리 알고 있다.
@@ -174,6 +183,50 @@ public class ValidationItemControllerV2 {
                 bindingResult.reject("totalPriceMin", new Object[]{10000, resultPrice}, null);
             }
         }
+
+        //검증에 실패하면 다시 입력 폼으로
+        if (bindingResult.hasErrors()) {
+            log.info("errors = {} ", bindingResult);
+            return "validation/v2/addForm";
+        }
+
+        //성공 로직
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/validation/v2/items/{itemId}";
+    }
+
+//    @PostMapping("/add")
+    public String addItemV5(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+
+        log.info("objectName={}", bindingResult.getObjectName()); //target의 정보를 미리 알고 있다.
+        log.info("target={}", bindingResult.getTarget());
+
+        if(itemValidator.supports(item.getClass())){ //itemValidator가 item을 지원하는지 확인
+            itemValidator.validate(item, bindingResult); //itemValidator의 validate 메서드를 호출
+
+            //검증에 실패하면 다시 입력 폼으로
+            if (bindingResult.hasErrors()) {
+                log.info("errors = {} ", bindingResult);
+                return "validation/v2/addForm";
+            }
+        }
+
+        //성공 로직
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/validation/v2/items/{itemId}";
+    }
+
+    // InitBinder를 사용해서 컨트롤러에 등록한 itemValidator를 사용하도록 변경 @Validated는 검증기를 실행하라는 의미이다.
+    // @Valid를 사용은 가능하나, @Validated를 사용하는 것이 더 명확하며, 이유는 Valid는 Java의 Annotation이고 Validated는 Spring의 Annotation이기 때문이다.
+    @PostMapping("/add")
+    public String addItemV6(@Validated @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+
+        log.info("objectName={}", bindingResult.getObjectName()); //target의 정보를 미리 알고 있다.
+        log.info("target={}", bindingResult.getTarget());
 
         //검증에 실패하면 다시 입력 폼으로
         if (bindingResult.hasErrors()) {
