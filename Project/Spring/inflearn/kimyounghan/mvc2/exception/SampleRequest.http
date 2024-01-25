@@ -13,3 +13,13 @@ accept: text/html
 GET http://localhost:8080/api/members/user-ex
 Content-Type: application/json
 accept: application/json
+
+### 400, ResponseStatus
+GET http://localhost:8080/api/response-status-ex1
+Content-Type: application/json
+accept: application/json
+
+### 404, ResponseStatusException
+GET http://localhost:8080/api/response-status-ex2
+Content-Type: application/json
+accept: application/json
