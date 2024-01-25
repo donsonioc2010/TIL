@@ -3,10 +3,10 @@ package com.jong1.exception.config;
 import com.jong1.exception.filter.LogFilter;
 import com.jong1.exception.interceptor.LogInterceptor;
 import com.jong1.exception.resolver.MyHandlerExceptionResolver;
+import com.jong1.exception.resolver.UserHandlerExceptionResolver;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -28,6 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
         resolvers.add(new MyHandlerExceptionResolver());
+        resolvers.add(new UserHandlerExceptionResolver());
     }
 
     //    @Bean

@@ -1,0 +1,15 @@
+### 5XX
+GET http://localhost:8080/api/members/ex
+
+### 400
+GET http://localhost:8080/api/members/bad
+
+### 500, HTML
+GET http://localhost:8080/api/members/user-ex
+Content-Type: text/html
+accept: text/html
+
+### 500, JSON
+GET http://localhost:8080/api/members/user-ex
+Content-Type: application/json
+accept: application/json

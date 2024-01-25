@@ -1,5 +1,6 @@
 package com.jong1.exception.api;
 
+import com.jong1.exception.exception.UserException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,9 @@ public class ApiExceptionController {
         if (id.equals("bad2")) {
             throw new IllegalStateException("잘못된 상태 값");
         }
+
+        if(id.equals("user-ex"))
+            throw new UserException("사용자 오류");
 
         return new MemberDto(id, "hello " + id);
     }
