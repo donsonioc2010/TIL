@@ -1,0 +1,11 @@
+###200
+GET http://localhost:8080/hello-v1?data=10
+
+###500 TypeMismatchException
+GET http://localhost:8080/hello-v1?data=rr
+
+###200
+GET http://localhost:8080/hello-v2?data=10
+
+###500 TypeMismatchException
+GET http://localhost:8080/hello-v2?data=rr
