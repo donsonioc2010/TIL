@@ -23,3 +23,12 @@ accept: application/json
 GET http://localhost:8080/api/response-status-ex2
 Content-Type: application/json
 accept: application/json
+
+### 5XX
+GET http://localhost:8080/api2/members/ex
+
+### 400
+GET http://localhost:8080/api2/members/bad
+
+### 400
+GET http://localhost:8080/api2/members/user-ex

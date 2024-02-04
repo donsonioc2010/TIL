@@ -28,7 +28,7 @@ public class ApiExceptionController {
             throw new IllegalStateException("잘못된 상태 값");
         }
 
-        if(id.equals("user-ex"))
+        if (id.equals("user-ex"))
             throw new UserException("사용자 오류");
 
         return new MemberDto(id, "hello " + id);
