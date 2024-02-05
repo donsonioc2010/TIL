@@ -1,5 +1,6 @@
 package com.jong1.typeconverter.controller;
 
+import com.jong1.typeconverter.type.IpPort;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,12 @@ public class HelloController {
     @GetMapping("/hello-v2")
     public String helloV2(@RequestParam("data") Integer intValue) {
         log.info("intValue={}", intValue);
+        return "ok";
+    }
+
+    @GetMapping("/hello-v3")
+    public String helloV3(@RequestParam("data") IpPort ipPort) {
+        log.info("IpPort={}", ipPort);
         return "ok";
     }
 }
