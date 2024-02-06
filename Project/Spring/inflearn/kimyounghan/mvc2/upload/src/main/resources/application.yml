@@ -1,0 +1,18 @@
+#logging:
+#  level:
+#    org:
+#      apache:
+#        coyote:
+#          http11: debug
+
+spring:
+  servlet:
+    multipart:
+      # 파일 하나의 최대 사이즈, Default 1MB
+      max-file-size: 1MB
+      # 멀티파트 요청 하나에 여러 파일 업로드가 가능하나, 그 전체 용량 합 제한 설정, Default 10MB
+      max-request-size: 10MB
+      # 멀티파트와 관련된 처리를 하지 않게되며, application/x-www-form-urlencoded만 지원하게 변경하는 설정 , Default True
+      #enabled: false
+
+file.dir: /Users/kimjongwon/Desktop/Study/file/
