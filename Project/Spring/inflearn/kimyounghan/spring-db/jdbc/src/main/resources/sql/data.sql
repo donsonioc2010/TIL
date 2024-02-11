@@ -1,0 +1,1 @@
+insert into member(member_id, money) values('test1', 100000);
