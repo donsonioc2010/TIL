@@ -29,6 +29,10 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 
+
+	//JdbcTemplate 추가
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
 	runtimeOnly 'com.h2database:h2'
 	testRuntimeOnly 'com.h2database:h2'
 }
