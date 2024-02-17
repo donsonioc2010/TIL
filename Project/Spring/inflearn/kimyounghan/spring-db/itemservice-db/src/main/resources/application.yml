@@ -15,4 +15,18 @@ spring:
   datasource:
     url: jdbc:h2:mem:jdbc;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     username: sa
-    password: 
+    password:
+
+#MyBatis
+mybatis:
+    type-aliases-package:  hello.itemservice.domain
+#    mapper-locations: classpath:mapper/**/*.xml
+    configuration:
+        map-underscore-to-camel-case: true
+
+logging:
+  level:
+    hello:
+      itemservice:
+        repository:
+          mybatis: trace

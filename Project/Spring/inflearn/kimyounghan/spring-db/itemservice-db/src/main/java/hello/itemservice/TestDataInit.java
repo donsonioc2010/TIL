@@ -15,6 +15,7 @@ public class TestDataInit {
 
     /**
      * 확인용 초기 데이터 추가
+     * SpringApplication이 정상적으로 모두 시작된 이후에 실행하는 Event
      */
     @EventListener(ApplicationReadyEvent.class)
     public void initData() {
