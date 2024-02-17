@@ -2,15 +2,21 @@ spring:
   profiles:
     active: local
 
-  sql:
-    init:
-      schema-locations: classpath:sql/schema.sql
-      data-locations: classpath:sql/data.sql
+#  JPA를 사용하기 때문에 주석
+#  sql:
+#    init:
+#      schema-locations: classpath:sql/schema.sql
+#      data-locations: classpath:sql/data.sql
 
   h2:
     console:
       path: /h2-console
       enabled: true
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
 
   datasource:
     url: jdbc:h2:mem:jdbc;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
@@ -30,3 +36,11 @@ logging:
       itemservice:
         repository:
           mybatis: trace
+
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace

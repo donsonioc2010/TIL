@@ -29,11 +29,14 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
-    //JdbcTemplate 추가
+    //JdbcTemplate 추가 (JPA 또는 MyBatis를 사용시 내장되어있어서 꼭 필요하진 않음)
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
     //MyBatis 추가
-    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3")
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+
+    // JPA, Spring Data JPA 추가
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     runtimeOnly 'com.h2database:h2'
     testRuntimeOnly 'com.h2database:h2'
