@@ -49,4 +49,59 @@ class MemberServiceTest {
         Assertions.assertTrue(memberRepository.find(username).isPresent());
         Assertions.assertTrue(logRepository.find(username).isEmpty());
     }
+
+
+    /**
+     * memberService @Transactional : O
+     * memberRepository @Transactional : OFF
+     * logRepository @Transactional : OFF
+     */
+    @Test
+    void singleTransaction_success() {
+        //given
+        String username = "singleTransaction_success";
+
+        //when
+        memberService.joinV1(username);
+
+        //then
+        Assertions.assertTrue(memberRepository.find(username).isPresent());
+        Assertions.assertTrue(logRepository.find(username).isPresent());
+    }
+
+    /**
+     * memberService @Transactional : ON
+     * memberRepository @Transactional : ON
+     * logRepository @Transactional : ON
+     */
+    @Test
+    void outerTxOn_success() {
+        //given
+        String username = "outerTxOn_success";
+
+        //when
+        memberService.joinV1(username);
+
+        //then
+        Assertions.assertTrue(memberRepository.find(username).isPresent());
+        Assertions.assertTrue(logRepository.find(username).isPresent());
+    }
+
+    /**
+     * memberService @Transactional : ON
+     * memberRepository @Transactional : ON
+     * logRepository @Transactional : ON Exception
+     */
+    @Test
+    void outerTxOn_fail() {
+        //given
+        String username = "로그예외_outerTxOn_fail";
+
+        //when
+        Assertions.assertThrows(RuntimeException.class, () -> memberService.joinV1(username));
+
+        //then
+        Assertions.assertTrue(memberRepository.find(username).isEmpty());
+        Assertions.assertTrue(logRepository.find(username).isEmpty());
+    }
 }
