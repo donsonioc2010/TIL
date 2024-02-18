@@ -26,6 +26,8 @@ try{
 }
 ```
 
+---
+
 ## 트랜잭션의 추상화
 
 > 위와 같이 사용법이 불편하다 보니 스프링에서는 트랜잭션의 추상화를 진행하였고 해당 인터페이스는 `PlatformTransactionManager`이다.
@@ -50,6 +52,8 @@ public interface PlatformTransactionManager extends TransactionManager {
 }
 ```
 
+---
+
 ## Spring Transaction의 사용 방식
 
 > `선언적 트랜잭션 방식`과 `프로그래밍 방식 트랜잭션 관리`가 있다.
@@ -65,9 +69,13 @@ public interface PlatformTransactionManager extends TransactionManager {
 - 트랜잭션 매니저 또는 템플릿을 사용해서 트랜잭션 관련 코드를 직접 작성하는 방식, 위의 예제코드의 방식을 의미한다.
 - 어플리케이션 코드가 트랜잭션 관련 코드와 강하게 결합하게 된다.
 
+---
+
 ## @Transactional 작동원리
 
 `@Transactional`이 클래스나 메소드에 하나라도 존재하는 경우 Transaction AOP는 해당 클래스를 프록시로 생성하여 기존의 클래스를 Spring Container에 등록하는게 아닌 프록시 기술로 제작된 클래스를 Spring Container에 등록한다.
+
+---
 
 ## @Transactional의 적용위치와 우선순위
 
@@ -87,6 +95,8 @@ public interface PlatformTransactionManager extends TransactionManager {
 2. 클래스의 타입(상단)
 3. 인터페이스의 메소드
 4. 인터페이스의 타입(상단)
+
+---
 
 ## 트랜잭션 AOP사용시 주의사항
 
@@ -181,6 +191,185 @@ public class InternalCallV1Test {
 
 > 스프링 어플리케이션이 초기화 하는 시점에는 `@Transactional`이 적용이 안될 가능성이 있다.
 
-#### 요약
+#### 요약 및 이유, 해결방안
 
-`@PostConstruct` : 스프링이 Bean을 생성하고 초기화하는 시점으로, 적용이 안될 수 있다.
+> [!NOTE]  
+> `@PostConstruct` : 스프링이 Bean을 생성하고 초기화하는 시점으로, 적용이 안될 수 있다.
+>
+> > 이유는 `@PostConstruct`같이 초기화 코드가 먼저 호출이 된 이후에 `트랜잭션 AOP`가 적용이 되기 때문이며,  
+> > 그로 인해서 초기화 메소드를 호출하는 시점에는 트랜잭션을 획득 할 수 없는 것이다.
+
+> [!NOTE]  
+> 해결 방법으로는`@EventListener`를 활용하고, `ApplicationReadyEvent`시점으로 적용하면 된다.
+
+#### 분석 로그
+
+> 아래의 로그 내역을 보면 알 수 있겠지만(?) `@PostConstruct`가 먼저 실행이 되면서, Trnasaction이 활성화가 안되어 있다.
+> 이후에 SpringApplication의 실행이 완료가 되고 그 다음이 `@EventListener`가 호출이 됨과 동시에 Transaction이 활성화가 되어 있는 것을 볼 수가 있다.
+>
+> 위와 같은 이유로 만약 `@Transactional`을 초기화 시점에 사용해야 한다면 `@EventListner`를 사용해야 한다.
+
+```log
+c.jong1.springtx.apply.InitTxTest$Hello  : Hello init @PostConstruct Transaction Active: false
+com.jong1.springtx.apply.InitTxTest      : Started InitTxTest in 0.898 seconds (process running for 1.375)
+o.s.t.i.TransactionInterceptor           : Getting transaction for [com.jong1.springtx.apply.InitTxTest$Hello.initV2]
+c.jong1.springtx.apply.InitTxTest$Hello  : Hello init @EventListener(ApplicationReadyEvent.class) Transaction Active: true
+o.s.t.i.TransactionInterceptor           : Completing transaction for [com.jong1.springtx.apply.InitTxTest$Hello.initV2]
+```
+
+#### Test Sample Code
+
+##### 오류가 발생하는 Sample
+
+```java
+@SpringBootTest
+public class InitTxTest {
+    @Autowired
+    private Hello hello;
+
+    @Test
+    void go() {
+        // 초기화 코드(@PostConstruct)는 스프링이 초기화 시점(Bean등록)에 호출한다
+    }
+
+    @TestConfiguration
+    static class InitTxTestConfig {
+        @Bean
+        public Hello hello() {
+            return new Hello();
+        }
+    }
+
+    @Slf4j
+    static class Hello {
+
+        @PostConstruct
+        @Transactional
+        public void initV1() {
+            boolean isActive = TransactionSynchronizationManager.isActualTransactionActive();
+            log.info("Hello init @PostConstruct Transaction Active: {}", isActive);
+        }
+    }
+
+}
+```
+
+##### 오류를 해결한 Sample
+
+```java
+@SpringBootTest
+public class InitTxTest {
+    @Autowired
+    private Hello hello;
+
+    @Test
+    void go() {
+        // 초기화 코드(@PostConstruct)는 스프링이 초기화 시점(Bean등록)에 호출한다
+    }
+
+    @TestConfiguration
+    static class InitTxTestConfig {
+        @Bean
+        public Hello hello() {
+            return new Hello();
+        }
+    }
+
+    @Slf4j
+    static class Hello {
+
+        @EventListener(ApplicationReadyEvent.class)
+        @Transactional
+        public void initV2() {
+            boolean isActive = TransactionSynchronizationManager.isActualTransactionActive();
+            log.info("Hello init @EventListener(ApplicationReadyEvent.class) Transaction Active: {}", isActive);
+
+        }
+    }
+
+}
+
+```
+
+---
+
+## @Trnasactional의 옵션
+
+### value, transactionManager
+
+> [!NOTE]
+> 코드로 직접 **트랜잭션을 사용할 때 분명히 트랜잭션 매니저를 주입받아 사용**을 했었다.
+> `선언적 트랜잭션`을 활용할 때도 마찬가지로 **트랜잭션 프록시가 사용할 트랜잭션 매니저를 지정**해 주어야 한다.
+> `value`의 값은 `transactionManager`를 사용하게 되는데, `value`또는 `transactionManager`에 **트랜잭션 매니저의 Spring Bean이름**을 적어주면 **해당 TxManager를 사용**하게 되며, **생략하게 되면 기본으로 등록된 TxManager를 사용**하게 된다.
+>
+> > 만약 사용하는 트랜잭션 매니저의 이름이 복수개라면 매니저 이름을 구분해서 활용하면 된다.
+
+### rollbackFor
+
+> 예외 발생시 Spring Transaction의 기본정책은 아래와 같다.
+>
+> > - UncheckedException인 `RuntimeException`, `Error`와 같은 하위 예외가 발생하는 경우에는 `Rollback`
+> > - CheckedException인 `Exception`예외들은 커밋한다.
+>
+> 개발을 하다보면 CheckedException인 경우에도 롤백을 진행하고 싶은 경우가 발생할 수도 있는데, 해당 옵션을 사용하면 Spring Transaction의 기본정책 이외의 예외때도 롤백을 지정할 수가 있다.
+>
+> > Sample코드처럼 사용가능하며 Exception.class를 사용하는 경우에는 Exception하위 전체를 롤백한다.
+> > 특별히 지정하고싶은 Exception이 존재하는 경우에는 해당 클래스만 꼭 집으면 된다.
+> >
+> > ```java
+> > @Transactional(rollbackFor = Exception.class)
+> > ```
+
+#### rollbackForClass
+
+> 해당 옵션은 `rollbackFor`의 확장판인데, `rollbackFor`은 예외Class를 직접 지정했다면, `rollbackForClass`의 경우에는 예외의 이름을 문자로 넣으면 된다.
+
+### noRollbackFor
+
+> `rollbackFor`와는 반대의 옵션으로 특정 예외가 발생 했을때 Rollback을 하면안되는지를 지정할 수 있다.
+
+#### noRollbackForClassName
+
+> 해당 옵션도 `rollbackForClass`와 는 반대의 옵션으로, 기본정책에서 특정 예외의 경우 rollback처리를 하면 안되는지를 지정하는 것을 예외 이름으로 지정하는 옵션이다.
+
+### Propagation
+
+> 트랜잭션 전파를 설정하는 옵션.
+
+### isolation
+
+> 트랜잭션의 격리 수준을 지정할 수 있는 옵션, 기본값은 DB에서 설정한 트랜잭션 격리수준을 사용하는 `DEFAULT`옵션을 사용하며, 옵션을 설정할 경우 변경이 가능하다.
+
+|       Value        | Description                           |
+| :----------------: | :------------------------------------ |
+|     `DEFAULT`      | DB에 설정된 격리수준을 적용한다.      |
+| `READ_UNCOMMITTED` | 커밋되지 않은 데이터까지 모두 읽는다. |
+|  `READ_COMMITTED`  | 커밋된 데이터만 읽는다.               |
+| `REPEATABLE_READ`  | 반복 가능한 읽기                      |
+|   `SERIALIZABLE`   | 직렬화 가능                           |
+
+### timeOut
+
+> [!NOTE]
+> 트랜잭션의 수행 시간에 대한 TimeOut을 초 단위로 지정하며, 기본값은 트랜잭션 시스템의 타임아웃을 사용한다.
+> OS에 따라 동작할 수도, 그렇지 않은 경우도 존재한다.
+
+### label
+
+> 트랜잭션 어노테이션에 있는 값을 직접 읽어서 어떤 동작을 하고싶을 떄 사용하나, 사용하는 케이스가 거의 없다.
+> 어플리케이션 코드의 복잡도가 증가하기 떄문...
+
+### readOnly
+
+> [!NOTE]
+> 트랜잭션은 기본적으로 Default가 false이며, 해당 경우에는 `읽기`, `쓰기`가 모두 가능한 트랜잭션이 된다.
+> `readOnly`의 값을 true로 부여하게 될 경우 `읽기`만 가능한 트랜잭션이 생성되며, 해당 트랜잭션은 `추가`, `수정`, `삭제`가 작동하지 않으나,(드라이버 또는 DB에 따라 정상적으로 동작하지 않을 수도 있다)
+> `readOnly`를 사용하면 대부분의 경우 `읽기`에서 성능 최적화가 발생할 수 있다.
+
+---
+
+## Spring Transaction 전파 - Propagation
+
+### 전파1 - 커밋, 롤백
+
+---
