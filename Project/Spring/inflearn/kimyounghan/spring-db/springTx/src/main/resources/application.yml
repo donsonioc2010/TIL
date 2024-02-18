@@ -17,13 +17,14 @@ spring:
 
 logging:
   level:
+
     org:
       springframework:
         transaction:
           interceptor: TRACE
 #       Rollback여부 확인을 위한 Log 추가
         jdbc:
-          dataSource:
+          datasource:
             DataSourceTransactionManager: DEBUG
         orm:
           jpa:
