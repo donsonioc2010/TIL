@@ -1,7 +1,8 @@
 package com.jong1.advanced.app.v2;
 
+import com.jong1.advanced.trace.TraceId;
 import com.jong1.advanced.trace.TraceStatus;
-import com.jong1.advanced.trace.hellotrace.HelloTraceV1;
+import com.jong1.advanced.trace.hellotrace.HelloTraceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,13 +10,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OrderServiceV2 {
     private final OrderRepositoryV2 orderRepository;
-    private final HelloTraceV1 trace;
+    private final HelloTraceV2 trace;
 
-    public void orderItem(String itemId) {
+    public void orderItem(TraceId traceId, String itemId) {
         TraceStatus status = null;
         try {
-            status = trace.begin("OrderService.orderItem()");
-            orderRepository.save(itemId);
+            status = trace.beginSync(traceId, "OrderService.orderItem()");
+            orderRepository.save(status.getTraceId(), itemId);
             trace.end(status);
         }catch (Exception e) {
             trace.exception(status, e);
