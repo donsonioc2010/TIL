@@ -50,4 +50,28 @@ public class TemplateMethodTest {
         AbstractTemplate logic2 = new SubClassLogic2();
         logic2.execute();
     }
+
+    /**
+     * 익명 내부 클래스로 템플릿 메소드패턴 적용하기
+     */
+    @Test
+    void templateMethodV2() {
+        AbstractTemplate logic1 = new AbstractTemplate() {
+            @Override
+            protected void call() {
+                log.info("비즈니스 로직 1 실행");
+            }
+        };
+
+        AbstractTemplate logic2 = new AbstractTemplate() {
+            @Override
+            protected void call() {
+                log.info("비즈니스 로직 2 실행");
+            }
+        };
+
+        logic1.execute();
+        logic2.execute();
+    }
+
 }
