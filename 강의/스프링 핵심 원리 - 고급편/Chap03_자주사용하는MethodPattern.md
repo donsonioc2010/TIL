@@ -61,6 +61,111 @@ public class Logic2 extends AbstractTemplate {
 
 (이름은 다르게 줘도 상관없다...)
 
+### Sample Code
+
+#### Context
+
+```java
+// V1
+@Slf4j
+public class ContextV1 {
+    private final Strategy strategy;
+
+    public ContextV1(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public void execute() {
+
+        long startTime = System.currentTimeMillis();
+
+        // 비즈니스 로직 실행
+        this.strategy.call();
+        // 비즈니스 로직 종료
+
+        long endTime = System.currentTimeMillis();
+        long resultTime = endTime - startTime;
+        log.info("resultTime >>> {}ms", resultTime);
+    }
+}
+
+// V2
+@Slf4j
+public class ContextV2 {
+    public void execute(Strategy strategy) {
+
+        long startTime = System.currentTimeMillis();
+
+        // 비즈니스 로직 실행
+        strategy.call();
+        // 비즈니스 로직 종료
+
+        long endTime = System.currentTimeMillis();
+        long resultTime = endTime - startTime;
+        log.info("resultTime >>> {}ms", resultTime);
+    }
+}
+```
+
+#### 전략과 전략의 구현체
+
+```java
+public interface Strategy {
+    void call();
+}
+
+@Slf4j
+public class StrategyLogic1 implements Strategy {
+    @Override
+    public void call() {
+        log.info("비즈니스 로직1 실행");
+    }
+}
+```
+
+#### 실행의 예제
+
+```java
+void strategyV1() {
+    ContextV1 context1 = new ContextV1(new StrategyLogic1());
+    context1.execute();
+
+    ContextV1 context2 = new ContextV1(new StrategyLogic2());
+    context2.execute();
+}
+
+void strategyV2() {
+    ContextV1 context1 = new ContextV1(() -> log.info("비즈니스 로직1 실행"));
+    context1.execute();
+
+    ContextV1 context2  = new ContextV1(() -> log.info("비즈니스 로직2 실행"));
+    context2.execute();
+}
+
+
+void strategyV1() {
+    ContextV2 contextV2 = new ContextV2();
+    contextV2.execute(new StrategyLogic1());
+    contextV2.execute(new StrategyLogic2());
+}
+
+void strategyV2() {
+    new ContextV2().execute(new StrategyLogic1());
+    new ContextV2().execute(new StrategyLogic2());
+}
+
+void strategyV3() {
+    new ContextV2().execute(() -> log.info("비즈니스 로직1 실행"));
+    new ContextV2().execute(() -> log.info("비즈니스 로직2 실행"));
+}
+```
+
 ## Template Callback Pattern
 
 > 템플릿 콜백 패턴
+
+### 콜백이란?
+
+> 프로그래밍에서 `CallBack`또는 `CallAfter Function`은 다른코드를 인수로서 넘겨주는 실행 가능한 코드를 의미한다.
+> 콜백으로 넘겨받는 코드는 이 콜백을 필요에 따라 즉시 실행할 수도, 나중에 실행할 수도 있다.  
+> 즉 코드가 호출은 되는데 코드를 넘겨준 곳(back)에서 실행이 된다는 의미이다.
