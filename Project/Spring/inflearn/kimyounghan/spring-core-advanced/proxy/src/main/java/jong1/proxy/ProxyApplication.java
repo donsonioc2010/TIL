@@ -6,6 +6,7 @@ import jong1.proxy.config.v1_proxy.ConcreteProxyConfig;
 import jong1.proxy.config.v1_proxy.InterfaceProxyConfig;
 import jong1.proxy.config.v2_dynamicproxy.DynamicProxyBasicConfig;
 import jong1.proxy.config.v2_dynamicproxy.DynamicProxyFilterConfig;
+import jong1.proxy.config.v3_proxyfactory.ProxyFactoryConfigV1;
 import jong1.proxy.trace.logtrace.LogTrace;
 import jong1.proxy.trace.logtrace.ThreadLocalLogTrace;
 import org.springframework.boot.SpringApplication;
@@ -18,7 +19,8 @@ import org.springframework.context.annotation.Import;
 //@Import({InterfaceProxyConfig.class})
 //@Import({ConcreteProxyConfig.class})
 //@Import({DynamicProxyBasicConfig.class})
-@Import({DynamicProxyFilterConfig.class})
+//@Import({DynamicProxyFilterConfig.class})
+@Import({ProxyFactoryConfigV1.class})
 @SpringBootApplication(scanBasePackages = "jong1.proxy.app.v3") // 컴포넌트 스캔대상 v3한정, v1, v2는 config로 하기위함
 public class ProxyApplication {
 
