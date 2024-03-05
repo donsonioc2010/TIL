@@ -27,11 +27,24 @@ public class AutoProxyConfig {
         return new DefaultPointcutAdvisor(pointcut, advice);
     }
 
-    @Bean
+    //@Bean
     public Advisor advisor2(LogTrace logTrace) {
         //PointCut
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
         pointcut.setExpression("execution(* jong1.proxy.app..*(..))"); //app..은 app하위 모든패키지를 의미하며, *(..)은 모든 메소드에 파라미터는 구분하지 않는 의미
+
+        //advice
+        LogTraceAdvice advice = new LogTraceAdvice(logTrace);
+
+        return new DefaultPointcutAdvisor(pointcut, advice);
+    }
+
+    @Bean
+    public Advisor advisor3(LogTrace logTrace) {
+        //PointCut
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        // noLog 메소드는 로그를 찍지 않는다.
+        pointcut.setExpression("execution(* jong1.proxy.app..*(..)) && !execution(* jong1.proxy.app..noLog(..))");
 
         //advice
         LogTraceAdvice advice = new LogTraceAdvice(logTrace);
