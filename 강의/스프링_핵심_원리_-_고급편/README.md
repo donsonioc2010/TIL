@@ -120,3 +120,63 @@ public interface BeanPostProcessor {
 }
 
 ```
+
+## AspectJ
+
+> Spring은 자동 프록시생성기(`AnnotationAwareAspectJAutoProxyCreator`)가 Advisor를 자동으로 찾아와서 필요한곳에 적용을 해주게 된다.
+> 여기에 추가로 AOP를 사용하게 될 경우 하나의 역할을 더 하게 되는데 바로 `@Aspect`를 찾아서 어드바이저(`Advisor`)로 변환을 해준다.
+
+### SampleCode
+
+> 아래의 코드처럼, 스프링은 `@Aspect`가 달린 빈을 컴포넌트 스캔으로 찾고 존재하는 경우 `@Around`를 포인트컷으로, 메소드로직을 `Advice`로 변환해 프록시를 생성하게 된다.
+
+```java
+@Slf4j
+@Aspect
+public class LogTraceAspect {
+
+    private final LogTrace logTrace;
+
+    public LogTraceAspect(LogTrace logTrace) {
+        this.logTrace = logTrace;
+    }
+
+    @Around("execution(* jong1.proxy.app..*(..))") //포인트컷 역할
+    public Object execute(ProceedingJoinPoint jointPoint) throws Throwable {
+        // 어드바이스 로직
+    }
+}
+```
+
+## Spring AOP
+
+- **조인 포인트**(`Join Point`)
+  - 어드바이스가 적용될 수 있는 위치, 메소드 실행, 생성자 호출, 필드 값 접근, Static메서드 접근 같은 프로그램 실행중 지점
+  - 추상적인 개념으로, AOP를 적용할 수 있는 모든 지점이라 생각해야 한다.
+  - 스프링 AOP는 프록시 방식을 사용하므로 조인포인트는 항상 메소드 실행지점으로 제한된다.
+- **포인트컷**(`Pointcut`)
+  - 조인포인트 중에서 어드바이스가 적용될 위치를 선별하는 기능
+  - 주로 AspectJ표현식을 사용해서 지정한다.
+  - 프록시를 사용하는 스프링 AOP는 **메소드 실행 지점만** 포인트컷으로 선별이 가능하다
+- **타켓**(`Target`)
+  - 어드바이스를 받는 객체, 실행해야 할 메소드
+- **어드바이스**(`Advice`)
+  - 타겟에게 부가기능을 실행할 로직메소드
+  - 특정 조인포인트에서 Aspect에 의해 취해지는 조치
+  - 어드바이스의 종류로는 `@Around(타겟 실행전후)`, `@Before(타겟 실행전)`, `@After(타겟 실행후)`가 있음
+- **에스펙트**(`Aspect`)
+  - 어드바이스 + 포인트컷을 모듈화 한 것
+    - `@Aspect`를 생각하면 된다.
+  - 여러 어드바이스와 포인트컷이 함께 존재가 가능하다.
+- **어드바이저**(`Advisor`)
+  - 하나의 어드바이스와 하나의 포인트컷으로 구성된 객체를 의미
+  - 스프링 AOP에서만 사용되는 용어이다
+- **위빙**(`Weaving`)
+  - 프인트컷으로 결정한 타켓의 조인포인트에 어드바이스를 적용하는 것을 의미
+  - 위빙을 통해 핵심기능코드에 영향을 주지않고, 횡단의 부가로직적용이 가능
+  - AOP적용을 위해 적용가능한 Aspect방법
+    - 컴파일을 하면서 Aspect적용
+    - 클래스를 로드하는 시점에 Aspect를 적용
+    - 런타임시점에 Proxy를 통한 AOP적용, (스프링AOP는 해당방식을 사용한다.)
+- **AOP프록시**
+  - AOP기능을 구현하기 위해 만든 프록시 객체로, 스프링 AOP프록시 에서 JDK동적프록시 또는 CGLIB프록시를 사용한다.
