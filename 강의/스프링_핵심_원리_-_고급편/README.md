@@ -180,3 +180,57 @@ public class LogTraceAspect {
     - 런타임시점에 Proxy를 통한 AOP적용, (스프링AOP는 해당방식을 사용한다.)
 - **AOP프록시**
   - AOP기능을 구현하기 위해 만든 프록시 객체로, 스프링 AOP프록시 에서 JDK동적프록시 또는 CGLIB프록시를 사용한다.
+
+### 어드바이스의 순서지정
+
+> 어드바이스는 기본적으로 순서를 보장하지 않는다.
+> 순서를 보장할 수 있는 단위는 `@Aspect`단위로 어드바이스를 적용이 가능하고 어드바이스 단위로는 할수 없다.
+> 그렇기에 어드바이스 별로 클래스를 분리해서 Aspect로 만들어 적용해야 한다.  
+> 순서를 적용하는 어노테이션은 `org.springframework.core.annotation.Order`이다.
+
+#### Aspect단위 분리 코드 예제
+
+변경 전
+
+```java
+@Slf4j
+@Aspect
+public class AspectV4Pointcut {
+
+    @Around("jong1.aop.order.aop.Pointcuts.allOrder()")
+    public Object advice1(ProceedingJoinPoint joinPoint) throws Throwable {
+      // 어드바이스 1
+    }
+
+    @Around("jong1.aop.order.aop.Pointcuts.orderAndService()")
+    public Object advice2(ProceedingJoinPoint joinPoint) throws Throwable {
+      // 어드바이스 2
+    }
+}
+```
+
+변경 후
+
+```java
+@Slf4j
+public class AspectV4Pointcut {
+
+  @Aspect
+  @Order(1)
+  static class Advice1 {
+    @Around("jong1.aop.order.aop.Pointcuts.allOrder()")
+    public Object advice1(ProceedingJoinPoint joinPoint) throws Throwable {
+      // 어드바이스 1
+    }
+  }
+
+  @Aspect
+  @Order(2)
+  static class Advice2 {
+    @Around("jong1.aop.order.aop.Pointcuts.orderAndService()")
+    public Object advice2(ProceedingJoinPoint joinPoint) throws Throwable {
+      // 어드바이스 2
+    }
+  }
+}
+```
