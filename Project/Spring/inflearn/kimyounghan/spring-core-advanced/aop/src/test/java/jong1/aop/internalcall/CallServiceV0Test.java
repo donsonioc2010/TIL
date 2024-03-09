@@ -1,13 +1,12 @@
-package jong1.aop.exam.internalcall;
+package jong1.aop.internalcall;
 
-import jong1.aop.exam.internalcall.aop.CallLogAspect;
+import jong1.aop.internalcall.CallServiceV0;
+import jong1.aop.internalcall.aop.CallLogAspect;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @Import({CallLogAspect.class})

@@ -1,4 +1,4 @@
-package jong1.aop.exam.internalcall;
+package jong1.aop.internalcall;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
