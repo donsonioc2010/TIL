@@ -22,7 +22,7 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-//일반 Jar 생성
+//일반 Jar 생성 : 라이브러리가 포함되어있지 않아 빌드를 해서 실행해도 오류가난다.
 task buildJar(type: Jar) {
     manifest {
         attributes 'Main-Class': 'jong1.embed.EmbedTomcatSpringMain'
@@ -30,7 +30,7 @@ task buildJar(type: Jar) {
     with jar
 }
 
-//Fat Jar 생성
+//Fat Jar 생성 : 사용하는 의존성을 모두 포함한 Jar를 만드는걸로, Runtime에서 사용되는 class파일이 전부 들어간다
 task buildFatJar(type: Jar) {
     manifest {
         attributes 'Main-Class': 'jong1.embed.EmbedTomcatSpringMain'
