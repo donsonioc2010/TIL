@@ -24,5 +24,8 @@ public class JavaSystemProperties {
         log.info("username >>> {}", username);
         log.info("password >>> {}", password);
 
+        System.setProperty("hi_key", "hi_value");
+        log.info("hi_key >>> {}", System.getProperty("hi_key"));
+        log.info("hi_key >>> {}", System.getProperty("hi_key2")); // null 없는경우
     }
 }
