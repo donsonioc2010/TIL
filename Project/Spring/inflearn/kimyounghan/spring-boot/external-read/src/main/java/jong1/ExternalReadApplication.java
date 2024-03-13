@@ -1,5 +1,6 @@
 package jong1;
 
+import jong1.config.MyDataSourceConfigV1;
 import jong1.config.MyDataSourceEnvConfig;
 import jong1.config.MyDataSourceValueConfig;
 import org.springframework.boot.SpringApplication;
@@ -7,7 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 //@Import({MyDataSourceEnvConfig.class})
-@Import({MyDataSourceValueConfig.class})
+//@Import({MyDataSourceValueConfig.class})
+@Import({MyDataSourceConfigV1.class})
 @SpringBootApplication(scanBasePackages = "jong1.datasource")
 public class ExternalReadApplication {
 
