@@ -1,0 +1,6 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        # 모든 기능을 액츄에이터에 노출하겠다는 표현
+        include: "*"
