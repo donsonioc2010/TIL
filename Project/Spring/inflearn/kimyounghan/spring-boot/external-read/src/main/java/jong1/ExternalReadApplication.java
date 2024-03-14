@@ -14,10 +14,10 @@ import org.springframework.context.annotation.Import;
 //@Import({MyDataSourceValueConfig.class})
 //@Import({MyDataSourceConfigV1.class})
 //@Import({MyDataSourceConfigV2.class})
-@Import({MyDataSourceConfigV3.class})
-@SpringBootApplication(scanBasePackages = "jong1.datasource")
+//@Import({MyDataSourceConfigV3.class})
+@SpringBootApplication(scanBasePackages = {"jong1.datasource", "jong1.pay"})
 //@ConfigurationPropertiesScan(basePackages = "jong1.datasource") //패키지를 제한하고 싶은경우
-@ConfigurationPropertiesScan // 어노테이션 하위 패키지 스캔
+//@ConfigurationPropertiesScan // 어노테이션 하위 패키지 스캔
 public class ExternalReadApplication {
 
     public static void main(String[] args) {
