@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+// Setter를 이용한 주입
 @Data
 @ConfigurationProperties("my.datasource")
 public class MyDataSourcePropertiesV1 {
