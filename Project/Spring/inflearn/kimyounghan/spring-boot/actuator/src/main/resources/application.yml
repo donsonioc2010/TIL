@@ -1,6 +1,20 @@
 management:
+  endpoint:
+    shutdown:
+#      shutdown은 default로 false이다.
+#      POST /actuator/shutdown을 통해 서버를 종료시킬 수 있다.
+      enabled: true
+
+
+    health:
+      #   헬스정보를 세부적으로 확인하고 싶은 경우
+      show-details: always
+      # 헬스정보를 컴포넌트별로 상태만 확인하고 싶은 경우
+#      show-components: always
   endpoints:
     web:
       exposure:
-        # 모든 기능을 액츄에이터에 노출하겠다는 표현
+#        # 모든 기능을 액츄에이터에 노출하겠다는 표현
         include: "*"
+##        특정 항목만 제외
+#        exclude: "env, beans"
