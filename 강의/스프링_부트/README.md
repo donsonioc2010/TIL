@@ -36,14 +36,14 @@
 > **전체 엔드포인트는 다음 공식 메뉴얼을 참고하자.**  
 > https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html#actuator.endpoints
 
-#### 헬스정보
+### 헬스정보
 
 > [!NOTE]  
 > 헬스 정보를 사용하면 어플리케이션에 문제가 발생시 문제를 빠르게 인지가 가능하며 엔드포인트는 `/actuator/health`이다.
 >
 > 헬스정보는 단순히 어플리케이션이 요청에 응답할 수 있는지를 판단하는 것을 넘어 어플리케이션이 사용하는 DB가 응답중인디, 디스크 사용량에 문제는 없는지 등 다양한 정보를 함께 포함해서 만들어진다.
 
-##### 헬스 설정
+#### 헬스 설정
 
 > [!NOTE]
 > 엑츄에이터는 `db`, `mongo`, `redis`, `diskspace`, `ping`과 같이 수많은 헬스 기능이 기본 제공되며,하나라도 Down인경우 종합 Status는 Down으로 표기된다.
@@ -62,4 +62,81 @@ management:
       show-details: always
       # 헬스정보를 컴포넌트별로 상태만 확인하고 싶은 경우
       show-components: always
+```
+
+### 어플리케이션 정보
+
+> [!NOTE]
+>
+> `info` 엔드포인트는 어플리케이션의 기본 정보를 노출하며, `/actuator/info`가 엔드포인트 이다.
+
+- 기본제공 기능
+  - `java`: 자바 런타임정보
+  - `os` : OS 정보
+  - `env` : `Environment` 에서 `info.` 로 시작하는 정보
+  - `build` : 빌드 정보, `META-INF/build-info.properties` 파일이 필요하다.
+  - `git` : `git` 정보, `git.properties` 파일이 필요하다.
+- `env` , `java` , `os` 는 기본으로 비활성화 되어 있다.
+
+#### `java`, `os`활성화 설정
+
+```yaml
+management:
+  info:
+    java:
+      enabled: true
+    os:
+      enabled: true
+```
+
+#### `env`설정
+
+다음과 같이 설정하면, info로 들어가게 될 경우, app하위의 정보를 확인가능하다
+
+```yaml
+management:
+  info:
+    env:
+      enabled: true
+info:
+  app:
+    name: hello-actuator
+    company: yh
+```
+
+#### Build정보 설정
+
+> [!NOTE]  
+> 빌드정보를 확인하고 싶은경우, `build.gradle`에 아래의 작업을 추가만 하면 된다.
+> 이렇게 하고 빌드를 해보면 `build` 폴더안에 `resources/main/META-INF/build-info.properties` 파일 을 확인할 수 있다.
+
+```groovy
+
+springBoot{
+    buildInfo()
+}
+
+```
+
+#### git설정
+
+> [!WARNING]
+> 먼저 우선순위는 깃이 프로젝트로 관리가 되야한다.
+
+> [!NOTE]  
+> 깃 확인하고 싶은경우, `build.gradle`에 플러그인을 추가하면 끝이다.
+
+```groovy
+plugins {
+    id "com.gorylenko.gradle-git-properties" version "2.4.1" //git info
+}
+```
+
+세부적인 항목을 더 추가로 보고싶은경우 아래의 설정을 추가하면된다.
+
+```yaml
+management:
+  info:
+    git:
+      mode: full
 ```

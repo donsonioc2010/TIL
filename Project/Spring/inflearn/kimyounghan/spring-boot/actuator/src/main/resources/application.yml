@@ -1,4 +1,14 @@
 management:
+  info:
+    java:
+      enabled: true
+    os:
+      enabled: true
+    env:
+      enabled: true
+    git:
+      mode: full
+
   endpoint:
     shutdown:
 #      shutdown은 default로 false이다.
@@ -18,3 +28,8 @@ management:
         include: "*"
 ##        특정 항목만 제외
 #        exclude: "env, beans"
+
+info:
+  app:
+    name: hello-actuator
+    company: yh
