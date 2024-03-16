@@ -148,6 +148,7 @@ management:
 #### 서버 운영중 로그레벨변경이 필요한 경우
 
 > `jong1.controller` 패키지경로가 존재한다고 할 경우를 가정시
+> 아래처럼 Request를 발송하게 될 경우 운영상황이 유지가 되면서 로거레벨이`DEBUG`레벨로 변경이 된다
 
 ```curl
 POST {Host}/actuator/loggers/jong1.controller
@@ -155,5 +156,25 @@ POST {Host}/actuator/loggers/jong1.controller
 JSON
 {
   "configuredLevel" : "DEBUG"
+}
+```
+
+### HTTP 요청 응답 기록(HttpExcanges)
+
+> [!NOTE]
+> HTTP 요청과 응답의 과거 기록을 확인하고 싶은 경우에는 `httpexchanges`엔드포인트를 활용하면 된다.
+
+#### 설정방법
+
+> [!NOTE]  
+> `httpexchanges`는 인터페이스 구현체를 빈으로 등록을하여 엔드포인트를 사용할 수 있으며, 빈을 등록하지 않는 경우 엔드포인트가 활성화가 되지않는다.
+>
+> > 스프링 부트는 기본으로 `InMemoryHttpExchangeRepository`구현체를 제공한다.
+
+```java
+// 다음과 같이 빈을 추가해야한다.
+@Bean
+public InMemoryHttpExchangeRepository httpExchangeRepository() {
+    return new InMemoryHttpExchangeRepository();
 }
 ```
