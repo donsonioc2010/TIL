@@ -178,3 +178,30 @@ public InMemoryHttpExchangeRepository httpExchangeRepository() {
     return new InMemoryHttpExchangeRepository();
 }
 ```
+
+### Actuator의 보안
+
+#### Actuator의 포트번호 변경방법
+
+```yaml
+management:
+  server:
+    port: 9999
+```
+
+#### Actuator의 엔드포인트 변경법
+
+> `/actuator/{}`에서 `/manage/{}`로 변경된다.
+
+```yaml
+management:
+  endpoints:
+    web:
+      base-path: "/manage"
+```
+
+#### 포트를 변경하지 못하는 상황
+
+> [!NOTE]
+> Actuatordml URL경로에 인증을 추가한다.
+> `/actuator`패스에 서블릿 필터, 인터셉터, 시큐리티등을 설정하고 인증된 사용자만 접근하도록 추가개발을 해야 함.
