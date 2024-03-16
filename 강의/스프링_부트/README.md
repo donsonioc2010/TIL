@@ -408,3 +408,24 @@ scrape_configs:
 5. Connection에 Prometheus의 주소인 localhost:9090으로 입력
    1. 타서버에서 돌리는 경우에는 값이 변경이 필요하다.
 6. 하단에서 Save&Test를 클릭한다.
+7. Connections -> Data sources를 확인시 확인이 가능
+
+### 대시보드를 제작하는 과정
+
+> [!NOTE]
+> 아래의 관계도로 인하여, 어플리케이션, 프로메테우스, 그라파나는 모두 켜져있어야 한다.
+
+```mermaid
+sequenceDiagram
+    participant G as Grafana
+    participant P as Prometheus
+    participant S as SpringBoot
+    loop Scheduling
+    P-->>+S: 메트릭 정보 내놔
+    S-->>-P: 여기요...
+    end
+    loop EveryTime Request
+    G->>P: 메트릭 수집정보좀 ㅎ;
+    P->>G: 메트릭 답장 ㅎ
+    end
+```
