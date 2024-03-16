@@ -337,7 +337,7 @@ server:
 - 다운로드 링크
   - https://prometheus.io/download/
 
-### 실행
+### 프로메테우스 실행
 
 1. 다운로드 파일의 압출을 해제한다.
 2. 터미널을 통해 압출해제한 경로로 이동한다
@@ -387,11 +387,24 @@ scrape_configs:
       tar -zxvf grafana-enterprise-10.4.0.darwin-amd64.tar.gz
       ```
 
-### 실행
+### 그라파나 실행
 
 1. 다운로드 및 압축 해제
 2. 터미널에서 해제한 디렉토리로 이동
 3. `bin`디렉토리로 이동
 4. `./grafana-server`를 실행한다
-5. 맥북의 시스템 -> 개인정보 보호 및 보안 -> 하단의 보안 -> prometheus 권한 허용을 한다
+5. 맥북의 시스템 -> 개인정보 보호 및 보안 -> 하단의 보안 -> grafana의 권한 허용을 한다
 6. 터미널에서 `./prometheus`를 재실행한다.
+7. `http://localhost:3000`에서 접속
+   1. id, pwd는 `admin`을 입력한다
+   2. 새계정 만드는건 스킵
+
+### 그라파나 프로메테우스 연동
+
+1. 그라파나 페이지 접속
+2. Connections 접속
+3. Add new Connections에서 Prometheus 클릭
+4. Add new DataSource 클릭
+5. Connection에 Prometheus의 주소인 localhost:9090으로 입력
+   1. 타서버에서 돌리는 경우에는 값이 변경이 필요하다.
+6. 하단에서 Save&Test를 클릭한다.
