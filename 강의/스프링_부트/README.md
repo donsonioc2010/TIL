@@ -358,7 +358,7 @@ implementation 'io.micrometer:micrometer-registry-prometheus'
 
 > [!NOTE]  
 > 프로메테우스를 설치한 패스에 `prometheus.yml`파일이 존재하며, 해당파일의 수정이 필요하다.
-> `scrape_configs` 속성에 아래처럼 추가하면 된다. 기존의 항목은 내비둔다.
+> `scrape_configs` 속성에 아래처럼 추가하면 된다. 기존의 항목은 내비둔다(삭제해도 상관은 없다).
 >
 > 아래의 설정을 한 이후, 프로메테우스를 재실행 한뒤 status -> configuration에서 yml이 적용된것을 확인하고, target에서 정상적으로 수집중인지를 확인하면 된다.
 
@@ -370,3 +370,28 @@ scrape_configs:
     static_configs:
       - targets: ["localhost:8080"] 연결할 서버정보들
 ```
+
+## 그라파나
+
+### 설치
+
+> [!WARN]  
+> 도커로 설치는 가능하나, 예제를 따라해야하니.. 직접 설치하자
+
+- 다운로드 링크
+  - https://grafana.com/grafana/download 에서 가능하다
+    - https://dl.grafana.com/enterprise/release/grafana-enterprise-10.4.0.darwin-amd64.tar.gz
+    - 터미널
+      ```bash
+      curl -O https://dl.grafana.com/enterprise/release/grafana-enterprise-10.4.0.darwin-amd64.tar.gz
+      tar -zxvf grafana-enterprise-10.4.0.darwin-amd64.tar.gz
+      ```
+
+### 실행
+
+1. 다운로드 및 압축 해제
+2. 터미널에서 해제한 디렉토리로 이동
+3. `bin`디렉토리로 이동
+4. `./grafana-server`를 실행한다
+5. 맥북의 시스템 -> 개인정보 보호 및 보안 -> 하단의 보안 -> prometheus 권한 허용을 한다
+6. 터미널에서 `./prometheus`를 재실행한다.
