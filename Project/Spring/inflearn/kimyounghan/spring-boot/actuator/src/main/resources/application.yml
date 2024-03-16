@@ -9,8 +9,8 @@ management:
     git:
       mode: full
 
-  server:
-    port: 9999
+#  server:
+#    port: 9999
 
   endpoint:
     shutdown:
@@ -26,7 +26,7 @@ management:
 #      show-components: always
   endpoints:
     web:
-      base-path: "/manage"
+#      base-path: "/manage"
       exposure:
 #        # 모든 기능을 액츄에이터에 노출하겠다는 표현
         include: "*"
