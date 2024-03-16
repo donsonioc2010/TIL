@@ -140,3 +140,20 @@ management:
     git:
       mode: full
 ```
+
+### 로거설정
+
+> Logger의 엔드포인트는 `/actuator/loggers`이며, 각각의 패키지들이 어떠한 로그레벨을 가지고 있는지를 확인할 때 사용하며, 모든 엔드포인트를 개방해 두었다면 따로 설정할 부분은 없다.
+
+#### 서버 운영중 로그레벨변경이 필요한 경우
+
+> `jong1.controller` 패키지경로가 존재한다고 할 경우를 가정시
+
+```curl
+POST {Host}/actuator/loggers/jong1.controller
+
+JSON
+{
+  "configuredLevel" : "DEBUG"
+}
+```

@@ -33,3 +33,7 @@ info:
   app:
     name: hello-actuator
     company: yh
+
+logging:
+  level:
+    jong1: debug
