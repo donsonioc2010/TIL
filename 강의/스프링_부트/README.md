@@ -353,3 +353,20 @@ server:
 ```groovy
 implementation 'io.micrometer:micrometer-registry-prometheus'
 ```
+
+### 프로메테우스에서의 설정
+
+> [!NOTE]  
+> 프로메테우스를 설치한 패스에 `prometheus.yml`파일이 존재하며, 해당파일의 수정이 필요하다.
+> `scrape_configs` 속성에 아래처럼 추가하면 된다. 기존의 항목은 내비둔다.
+>
+> 아래의 설정을 한 이후, 프로메테우스를 재실행 한뒤 status -> configuration에서 yml이 적용된것을 확인하고, target에서 정상적으로 수집중인지를 확인하면 된다.
+
+```yaml
+scrape_configs:
+  - job_name: "spring-actuator"      그라파나에 표시될 잡네임
+    metrics_path: "/actuator/prometheus"  백엔드에서 반환하는 엔드포인트
+    scrape_interval: 1s             스크랩주기 (보통 10~15s를 주기로 잡음, 기본값은 1m)
+    static_configs:
+      - targets: ["localhost:8080"] 연결할 서버정보들
+```
