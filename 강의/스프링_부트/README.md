@@ -345,3 +345,11 @@ server:
 4. 맥북의 시스템 -> 개인정보 보호 및 보안 -> 하단의 보안 -> prometheus 권한 허용을 한다
 5. 터미널에서 `./prometheus`를 재실행한다.
 6. `http://localhost:9090`으로 접속하면 실행여부의 확인이 가능하다.
+
+### SpringBoot에서 프로메테우스 마이크로미터 설정
+
+> `build.gradle`에 의존성을 추가한다. 그러면 `/actuator/prometheus`다음의 엔드포인트가 자동으로 추가되고, 현재의 메트릭정보를 프로메테우스에 맞게 포매팅하여 반환한다.
+
+```groovy
+implementation 'io.micrometer:micrometer-registry-prometheus'
+```
