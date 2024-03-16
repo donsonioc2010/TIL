@@ -41,3 +41,8 @@ info:
 logging:
   level:
     jong1: debug
+
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true

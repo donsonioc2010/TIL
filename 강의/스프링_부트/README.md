@@ -206,6 +206,10 @@ management:
 > Actuatordml URL경로에 인증을 추가한다.
 > `/actuator`패스에 서블릿 필터, 인터셉터, 시큐리티등을 설정하고 인증된 사용자만 접근하도록 추가개발을 해야 함.
 
+---
+
+## 모니터링
+
 ### 마이크로미터란?
 
 > [!NOTE]  
@@ -217,3 +221,95 @@ management:
 > [!NOTE]
 > 지표를 확인하는 엔드포인트로 `{HostName}/actuator/metric`이다.
 > 들어가게 되면 names하위로 다양한 지표 항목들이 출력이 되며, 단일로 확인하고 싶은 경우 `{HostName}/actuator/metric/{names항목명}` 으로 세부 확인이 가능하다.
+
+#### JVM메트릭
+
+> JVM과 관련된 메트릭을 제공하며, `jvm.`으로 시작한다
+
+- 메모리 및 버퍼 풀 세부 정보
+- 가비지 수집 관련 통계
+- 스레드 활용내역
+- 로드 및 언로드된 클래스의 갯수
+- JVM의 버전정보
+- JIT 컴파일 시간 등
+
+#### 시스템 메트릭
+
+> 시스템과 관련된 메트릭을 제공하며, `system.`, `process.`, `disk.`으로 시작한다.
+
+- CPU지표
+- 파일 디스크립터 메트릭
+- 가동시간 관련 메트릭
+- 사용가능한 디스크 공간 등등
+
+#### 에플리케이션 메트릭
+
+> 어플리케이션과 관련된 메트릭을 제공하며, `application.`으로 시작한다. 어플리케이션 시작시간, 요청 처리 준비 시간등이 있다.
+
+#### 스프링 MVC 매트릭
+
+> 스프링 MVC컨트롤러가 처리하는 모든 요청을 다루는 메트릭이며, `http.server.requests`로 시작한다.
+
+- `TAG`를 사용해서 다음 정보를 분류해 확인이 가능하다.
+  - `uri`: 요청된 URI
+  - `method`: `GET`, `POST`, `PUT`과 같이 요청되는 HTTP메서드
+  - `status`: `200`, `404`, `500`등 Server에서 반환하는 Http Status코드
+  - `exception`: 발생된 예외
+  - `outcome`: 상태코드를 그룹으로 모아서 확인이 가능하다.
+    - `1xx:INFORMATIONAL` tag=outcome:INFORMATIONAL
+    - `2xx:SUCCESS` tag=outcome:SUCCESS
+    - `3xx:REDIRECTION` tag=outcome:REDIRECTION
+    - `4xx:CLIENT_ERROR` tag=outcome:CLIENT_ERROR
+    - `5xx:SERVER_ERROR` tag=outcome:SERVER_ERROR
+
+#### 데이터소스 메트릭
+
+> `DataSource` 커넥션 풀에 관련한 정보를 확인 가능한 메트릭이며, `jdbc.connection`으로 시작하며, 히카리CP를 사용하면 `hikaricp.`를 통해서 더 자세한 커넥션 상황 확인이 가능하다
+
+- 최대 커넥션
+- 최소 커넥션
+- 활성 커넥션
+- 대기 커넥션등등
+
+#### 로그 메트릭
+
+> logback로그에서 로그 레벨별로 발생된 갯수 정보를 확인하는 메트릭이며, `logback.events`이다.
+>
+> `logback.events?tag=level:error`
+>
+> > `tag`는 `trace`, `debug`, `info`, `warn`, `error`이다
+
+#### 톰캣 메트릭
+
+> 톰캣 메트릭은 톰캣정보에서 관리하는 정보를을 확인가능한 메트릭이며, `tomcat.`으로 시작한다
+
+- 톰캣 캐시
+- 톰캣 연결 커넥션
+- 글로벌
+- 서블릿
+- 세션
+- 스레드
+
+##### 필요한 추가 설정
+
+> 톰캣 메트릭은 최초에는 session과 관련된 부분밖에 사용이 불가능하며, 아래와 같이 설정할 경우 톰캣의 `servlet`, `global`, `connection`, `cache`, `thread` 등 다양한 정보확인이 가능하기에 켜두는것을 권장한다
+
+```yaml
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+```
+
+#### 그외
+
+- 스케쥴링
+- 캐시
+- HTTP 클라이언트 메트릭
+- 레디스 메트릭
+- 스프링 데이터 리포지토리 메트릭
+- 개발자 가 직접 정의한 메트릭 등 등록이 가능하다
+
+##### 직접 정의한 메트릭?
+
+예시는 주문수, 취소수 등 직접 개발한 메트릭을 의미한다.
