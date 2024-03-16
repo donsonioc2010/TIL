@@ -457,3 +457,19 @@ sequenceDiagram
 
 - 대시보드 : 패널들의 모음, 큰틀
 - 패널 : 항목들을 표현해줄 그래프 컴포넌트
+
+#### 이미 제작된 공유 대시보드 활용
+
+> [!NOTE]
+> 패널을 직접 만들어보니 여간힘든게 아니었다... 이미 다양한 사람들이 만들어둔 대시보드가 공개되어 있다.
+> 스프링부트와 마이크로미터를 사용해 만든 대시보드를 활용해 보는 방법에 대한 기록이다.
+
+1. 링크 접속
+   1. https://grafana.com/grafana/dashboards
+2. spring 검색
+   1. 다음과 같이 뜨는데 JVM, SpringBoot 2.1 System Monitor가 자주 사용이 된다.
+      ![검색모습](./img/대시보드_검색이미지.png)
+3. 맘에 드는 대시보드에 접속후 JSON을 다운로드 받거나 ID를 복사한다
+4. Grafana의 Dashboard에서 Import Dashboard를 한다.
+5. 다운로드 받은 JSON을 업로드하거나 복사한 ID를 기록후 Load한다
+6. DataSource를 지정한다, (예제의 경우 Prometheus뿐이다.)
