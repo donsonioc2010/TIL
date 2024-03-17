@@ -1,6 +1,7 @@
 package jong1;
 
 import jong1.order.guage.StockConfigV1;
+import jong1.order.guage.StockConfigV2;
 import jong1.order.v0.OrderConfigV0;
 import jong1.order.v1.OrderConfigV1;
 import jong1.order.v2.OrderConfigV2;
@@ -17,7 +18,8 @@ import org.springframework.context.annotation.Import;
 //@Import(OrderConfigV2.class)
 //@Import(OrderConfigV3.class)
 //@Import(OrderConfigV4.class)
-@Import({OrderConfigV4.class, StockConfigV1.class})
+//@Import({OrderConfigV4.class, StockConfigV1.class})
+@Import({OrderConfigV4.class, StockConfigV2.class})
 @SpringBootApplication(scanBasePackages = "jong1.controller")
 public class ActuatorApplication {
 
