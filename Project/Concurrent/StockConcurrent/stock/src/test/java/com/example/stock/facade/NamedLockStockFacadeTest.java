@@ -1,4 +1,4 @@
-package com.example.stock.service;
+package com.example.stock.facade;
 
 import static org.junit.jupiter.api.Assertions.*;
 import com.example.stock.domain.Stock;
@@ -14,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class StockServiceTest {
+class NamedLockStockFacadeTest {
+
     @Autowired
-    private PessimisticLockStockService stockService;
-//    private StockService stockService;
+    private NamedLockStockFacade namedLockStockFacade;
 
     @Autowired
     private StockRepository stockRepository;
@@ -33,15 +33,6 @@ class StockServiceTest {
     }
 
     @Test
-    public void 재고감소() {
-        stockService.decrease(1L, 1L);
-
-        stockRepository.findById(1L).ifPresent(stock -> {
-            assertEquals(99L, stock.getQuantity());
-        });
-    }
-    
-    @Test
     public void 동시에_100개의_요청() throws InterruptedException {
         int threadCount = 100;
         ExecutorService executorService = Executors.newFixedThreadPool(32);
@@ -49,7 +40,7 @@ class StockServiceTest {
         for(int i =0; i< threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    stockService.decrease(1L, 1L);
+                    namedLockStockFacade.decrease(1L, 1L);
                 } finally {
                     latch.countDown();
                 }
