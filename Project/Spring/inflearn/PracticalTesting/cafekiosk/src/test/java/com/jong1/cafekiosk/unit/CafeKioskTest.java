@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.jong1.cafekiosk.unit.beverage.Americano;
 import com.jong1.cafekiosk.unit.beverage.Latte;
 import com.jong1.cafekiosk.unit.order.Order;
-import java.time.LocalDateTime;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class CafeKioskTest {
@@ -22,6 +22,7 @@ class CafeKioskTest {
     }
 
     @Test
+    @DisplayName("음료 1개를 추가하면 주문 목록에 담긴다.")
     void add() {
         CafeKiosk cafeKiosk = new CafeKiosk();
         cafeKiosk.add(new Americano());
@@ -74,12 +75,18 @@ class CafeKioskTest {
     }
 
     @Test
+    @DisplayName("주문 목록에 담긴 상품들의 총 금액을 계산 할 수 있다.")
     void calculateTotalPrice() {
+        // given
         CafeKiosk cafeKiosk = new CafeKiosk();
         cafeKiosk.add(new Americano());
         cafeKiosk.add(new Latte());
 
-        assertThat(cafeKiosk.calculateTotalPrice()).isEqualTo(8_500);
+        // when
+        int totalPrice = cafeKiosk.calculateTotalPrice();
+
+        // then
+        assertThat(totalPrice).isEqualTo(8_500);
     }
 
     @Test
