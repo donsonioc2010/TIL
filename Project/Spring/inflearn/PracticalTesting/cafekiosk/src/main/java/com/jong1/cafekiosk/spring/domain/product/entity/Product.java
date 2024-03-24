@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -40,4 +41,14 @@ public class Product extends BaseEntity {
 
     @Comment("상품 가격")
     private int price;
+
+    @Builder
+    public Product(String productNumber, ProductType type, ProductSellingType sellingStatus,
+        String name, int price) {
+        this.productNumber = productNumber;
+        this.type = type;
+        this.sellingStatus = sellingStatus;
+        this.name = name;
+        this.price = price;
+    }
 }
