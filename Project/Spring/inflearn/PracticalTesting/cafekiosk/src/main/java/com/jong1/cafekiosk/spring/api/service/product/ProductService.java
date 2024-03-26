@@ -1,6 +1,7 @@
 package com.jong1.cafekiosk.spring.api.service.product;
 
-import com.jong1.cafekiosk.spring.api.controller.product.dto.request.ProductCreateRequest;
+import com.jong1.cafekiosk.spring.api.controller.product.request.ProductCreateRequest;
+import com.jong1.cafekiosk.spring.api.service.product.request.ProductCreateServiceRequest;
 import com.jong1.cafekiosk.spring.api.service.product.response.ProductResponse;
 import com.jong1.cafekiosk.spring.domain.product.entity.Product;
 import com.jong1.cafekiosk.spring.domain.product.entity.ProductSellingType;
@@ -19,7 +20,7 @@ public class ProductService {
 
     // 동시성 이슈 가능은 하나, 학습용이니까 ㅎ;
     @Transactional
-    public ProductResponse createProduct(ProductCreateRequest request) {
+    public ProductResponse createProduct(ProductCreateServiceRequest request) {
         // ProductNumber [001, 002, 003~~~]
         String nextProductNumber = createNextProductNumber();
 

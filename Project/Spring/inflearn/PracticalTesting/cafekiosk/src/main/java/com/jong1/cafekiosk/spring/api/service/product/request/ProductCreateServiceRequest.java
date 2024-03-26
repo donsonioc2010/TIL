@@ -1,20 +1,26 @@
-package com.jong1.cafekiosk.spring.api.controller.product.dto.request;
+package com.jong1.cafekiosk.spring.api.service.product.request;
 
 import com.jong1.cafekiosk.spring.domain.product.entity.Product;
 import com.jong1.cafekiosk.spring.domain.product.entity.ProductSellingType;
 import com.jong1.cafekiosk.spring.domain.product.entity.ProductType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class ProductCreateRequest {
+@NoArgsConstructor
+public class ProductCreateServiceRequest {
+
     private ProductType type;
+
     private ProductSellingType sellingStatus;
+
     private String name;
+
     private int price;
 
     @Builder
-    private ProductCreateRequest(ProductType type, ProductSellingType sellingStatus, String name,
+    private ProductCreateServiceRequest(ProductType type, ProductSellingType sellingStatus, String name,
         int price) {
         this.type = type;
         this.sellingStatus = sellingStatus;

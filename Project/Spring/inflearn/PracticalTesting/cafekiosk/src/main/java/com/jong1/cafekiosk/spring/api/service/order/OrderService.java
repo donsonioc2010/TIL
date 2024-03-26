@@ -1,6 +1,6 @@
 package com.jong1.cafekiosk.spring.api.service.order;
 
-import com.jong1.cafekiosk.spring.api.controller.order.request.OrderCreateRequest;
+import com.jong1.cafekiosk.spring.api.service.order.request.OrderCreateServiceRequest;
 import com.jong1.cafekiosk.spring.api.service.order.response.OrderResponse;
 import com.jong1.cafekiosk.spring.domain.order.entity.Order;
 import com.jong1.cafekiosk.spring.domain.order.repository.OrderRepository;
@@ -28,7 +28,7 @@ public class OrderService {
     private final StockRepository stockRepository;
 
     // 동시성 문제가 발생할 수 있는 주제이며 , 이를 위해 Optimistic Lock이나 Pessimistic Lock을 고려해볼 수 잇다.
-    public OrderResponse createOrder(OrderCreateRequest request, LocalDateTime registeredDateTime) {
+    public OrderResponse createOrder(OrderCreateServiceRequest request, LocalDateTime registeredDateTime) {
         List<String> productNumbers = request.getProductNumbers();
 
         List<Product> products = findProductsBy(productNumbers);

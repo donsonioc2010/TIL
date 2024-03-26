@@ -3,7 +3,7 @@ package com.jong1.cafekiosk.spring.api.service.order;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
-import com.jong1.cafekiosk.spring.api.controller.order.request.OrderCreateRequest;
+import com.jong1.cafekiosk.spring.api.service.order.request.OrderCreateServiceRequest;
 import com.jong1.cafekiosk.spring.api.service.order.response.OrderResponse;
 import com.jong1.cafekiosk.spring.domain.order.repository.OrderRepository;
 import com.jong1.cafekiosk.spring.domain.orderproduct.repository.OrderProductRepository;
@@ -19,10 +19,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 @ActiveProfiles("test")
 //@Transactional // 사용을 하게되면, Service에 transactional이 있는것 같은 효과를 줘서 테스트를 진행시 서비스에 적용유무 판단을 못하게 되는 결과가 생길 수 있다. 그러니 사용 안하는 것을 권장.
@@ -62,7 +60,7 @@ class OrderServiceTest {
         Product product3 = createProduct(ProductType.HANDMADE, "003", 5_000);
         productRepository.saveAll(List.of(product1, product2, product3));
 
-        OrderCreateRequest request = OrderCreateRequest.builder()
+        OrderCreateServiceRequest request = OrderCreateServiceRequest.builder()
             .productNumbers(List.of("001", "002"))
             .build();
 
@@ -95,7 +93,7 @@ class OrderServiceTest {
         Product product3 = createProduct(ProductType.HANDMADE, "003", 5_000);
         productRepository.saveAll(List.of(product1, product2, product3));
 
-        OrderCreateRequest request = OrderCreateRequest.builder()
+        OrderCreateServiceRequest request = OrderCreateServiceRequest.builder()
             .productNumbers(List.of("001", "001"))
             .build();
 
@@ -132,7 +130,7 @@ class OrderServiceTest {
         Stock stock2 = Stock.create("002", 2);
         stockRepository.saveAll(List.of(stock1, stock2));
 
-        OrderCreateRequest request = OrderCreateRequest.builder()
+        OrderCreateServiceRequest request = OrderCreateServiceRequest.builder()
             .productNumbers(List.of("001", "001", "002", "003"))
             .build();
 
@@ -183,7 +181,7 @@ class OrderServiceTest {
         Stock stock2 = Stock.create("002", 2);
         stockRepository.saveAll(List.of(stock1, stock2));
 
-        OrderCreateRequest request = OrderCreateRequest.builder()
+        OrderCreateServiceRequest request = OrderCreateServiceRequest.builder()
             .productNumbers(List.of("001", "001", "002", "003"))
             .build();
 
