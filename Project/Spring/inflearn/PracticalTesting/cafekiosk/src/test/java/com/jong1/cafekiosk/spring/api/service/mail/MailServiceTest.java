@@ -11,6 +11,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -38,12 +39,15 @@ class MailServiceTest {
 
         // 위의 @InjectMocks로 대체가능
 //        MailService mailService = new MailService(mailSendClient, mailSendHistoryRepository);
-
-        Mockito.when(mailSendClient.sendMail(anyString(), anyString(), anyString(), anyString()))
-            .thenReturn(true);
+//
+//        Mockito.when(mailSendClient.sendMail(anyString(), anyString(), anyString(), anyString()))
+//            .thenReturn(true);
 
 /*        Mockito.when(mailSendHistoryRepository.save(any(MailSendHistory.class)))
             .thenReturn(new MailSendHistory()); 기본값으로 null던져준다.*/
+
+        BDDMockito.given(mailSendClient.sendMail(anyString(), anyString(), anyString(), anyString()))
+            .willReturn(true);
 
         // when
         boolean result = mailService.sendMail("", "", "", "");
