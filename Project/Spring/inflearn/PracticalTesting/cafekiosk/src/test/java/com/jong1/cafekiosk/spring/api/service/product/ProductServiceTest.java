@@ -4,6 +4,7 @@ import static com.jong1.cafekiosk.spring.domain.product.entity.ProductSellingTyp
 import static com.jong1.cafekiosk.spring.domain.product.entity.ProductType.HANDMADE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
+import com.jong1.cafekiosk.spring.IntegrationTestSupport;
 import com.jong1.cafekiosk.spring.api.service.product.request.ProductCreateServiceRequest;
 import com.jong1.cafekiosk.spring.api.service.product.response.ProductResponse;
 import com.jong1.cafekiosk.spring.domain.product.entity.Product;
@@ -18,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
-@SpringBootTest
-class ProductServiceTest {
+class ProductServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private ProductService productService;

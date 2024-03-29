@@ -3,15 +3,18 @@ package com.jong1.cafekiosk.spring.domain.stock.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.*;
+import com.jong1.cafekiosk.spring.IntegrationTestSupport;
 import com.jong1.cafekiosk.spring.domain.stock.entity.Stock;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 
-@DataJpaTest
-class StockRepositoryTest {
+//@DataJpaTest
+@Transactional
+class StockRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     private StockRepository stockRepository;

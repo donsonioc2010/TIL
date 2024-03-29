@@ -1,6 +1,7 @@
 package com.jong1.cafekiosk.spring.api.controller.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jong1.cafekiosk.spring.ControllerTestSupport;
 import com.jong1.cafekiosk.spring.api.controller.order.request.OrderCreateRequest;
 import com.jong1.cafekiosk.spring.api.service.order.OrderService;
 import java.util.List;
@@ -15,15 +16,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@WebMvcTest(controllers = OrderController.class)
-class OrderControllerTest {
+//@WebMvcTest(controllers = OrderController.class)
+class OrderControllerTest extends ControllerTestSupport {
 
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
-    @MockBean
-    private OrderService orderService;
+//    @Autowired
+//    private MockMvc mockMvc;
+//    @Autowired
+//    private ObjectMapper objectMapper;
+//    @MockBean
+//    private OrderService orderService;
 
     @Test
     @DisplayName("신규 주문을 등록한다")

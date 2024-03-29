@@ -3,6 +3,7 @@ package com.jong1.cafekiosk.spring.api.service.order;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
+import com.jong1.cafekiosk.spring.IntegrationTestSupport;
 import com.jong1.cafekiosk.spring.api.service.order.request.OrderCreateServiceRequest;
 import com.jong1.cafekiosk.spring.api.service.order.response.OrderResponse;
 import com.jong1.cafekiosk.spring.domain.order.repository.OrderRepository;
@@ -22,11 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 //@Transactional // 사용을 하게되면, Service에 transactional이 있는것 같은 효과를 줘서 테스트를 진행시 서비스에 적용유무 판단을 못하게 되는 결과가 생길 수 있다. 그러니 사용 안하는 것을 권장.
-@SpringBootTest
+//@SpringBootTest
 //@DataJpaTest
-class OrderServiceTest {
+class OrderServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private OrderService orderService;

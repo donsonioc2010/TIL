@@ -2,6 +2,7 @@ package com.jong1.cafekiosk.spring.api.service.order;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import com.jong1.cafekiosk.spring.IntegrationTestSupport;
 import com.jong1.cafekiosk.spring.client.mail.MailSendClient;
 import com.jong1.cafekiosk.spring.domain.history.mail.entity.MailSendHistory;
 import com.jong1.cafekiosk.spring.domain.history.mail.repository.MailSendHistoryRepository;
@@ -28,9 +29,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 @Slf4j
-@ActiveProfiles("test")
-@SpringBootTest
-class OrderStatisticServiceTest {
+//@ActiveProfiles("test")
+//@SpringBootTest
+class OrderStatisticServiceTest extends IntegrationTestSupport {
     @Autowired
     private OrderStatisticService orderStatisticService;
 
@@ -46,8 +47,8 @@ class OrderStatisticServiceTest {
     @Autowired
     private MailSendHistoryRepository mailSendHistoryRepository;
 
-    @MockBean
-    private MailSendClient mailSendClient;
+//    @MockBean
+//    private MailSendClient mailSendClient;
 
     @AfterEach
     void tearDown() {

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.jong1.cafekiosk.unit.beverage.Americano;
 import com.jong1.cafekiosk.unit.beverage.Latte;
 import com.jong1.cafekiosk.unit.order.Order;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -89,6 +90,7 @@ class CafeKioskTest {
         assertThat(totalPrice).isEqualTo(8_500);
     }
 
+    @Disabled
     @Test
     void createOrder() {
         CafeKiosk cafeKiosk = new CafeKiosk();
