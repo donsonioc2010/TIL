@@ -34,6 +34,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // Guava
+    implementation("com.google.guava:guava:33.1.0-jre")
 }
 
 tasks.named('test') {
