@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.3'
     id 'io.spring.dependency-management' version '1.1.4'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.jong1'
@@ -14,6 +15,10 @@ java {
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
+    }
+
+    asciidoctorExt {
+
     }
 }
 
@@ -37,8 +42,34 @@ dependencies {
 
     // Guava
     implementation("com.google.guava:guava:33.1.0-jre")
+
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+
+    sources { //특정 파일만 html로 제작한다 없으면 producta.html등이 따로 다 생성이 됨
+        include("**/index.adoc")
+    }
+    baseDirFollowsSourceFile() //다른 adoc 파일을 include 할 때 경로를 baseDir로 맞준다
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
 }
