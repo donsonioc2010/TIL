@@ -16,36 +16,34 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Slf4j
 //@Configuration
 @RequiredArgsConstructor
-public class HelloJobConfiguration extends DefaultBatchConfiguration {
+public class JobConfiguration extends DefaultBatchConfiguration {
 //    private final JobRepository jobRepository;
 //    private final PlatformTransactionManager transactionManager;
 
-    @Bean(name = "helloJob")
-    public Job helloJob(JobRepository jobRepository) {
-        return new JobBuilder("helloJob", jobRepository)
-            .start(helloStep1(jobRepository))
-            .next(helloStep2(jobRepository)) // 선택
+    @Bean(name = "newJob")
+    public Job job(JobRepository jobRepository) {
+        return new JobBuilder("newJob", jobRepository)
+            .start(step1(jobRepository))
+            .next(step2(jobRepository))
             .build();
     }
 
-    @Bean(name = "helloStep1")
-    public Step helloStep1(JobRepository jobRepository) {
-        return new StepBuilder("helloStep1", jobRepository)
+    @Bean(name = "newStep1")
+    public Step step1(JobRepository jobRepository) {
+        return new StepBuilder("newStep1", jobRepository)
             .tasklet((contribution, chunkContext) -> {
-                log.info("Hello, Spring Batch Step1!");
-                // null을 주면 디폴트로 스텝을 무한반복한다. FINISHED를 리턴하면 스텝이 종료된다.
+                log.info("New Step 1 Was Executed");
                 return RepeatStatus.FINISHED;
 //            }, transactionManager)
             }, getTransactionManager())
             .build();
     }
 
-    @Bean(name = "helloStep2")
-    public Step helloStep2(JobRepository jobRepository) {
-        return new StepBuilder("helloStep2", jobRepository)
+    @Bean(name = "newStep2")
+    public Step step2(JobRepository jobRepository) {
+        return new StepBuilder("newStep2", jobRepository)
             .tasklet((contribution, chunkContext) -> {
-                log.info("Hello, Spring Batch Step2!");
-//                return RepeatStatus.CONTINUABLE;
+                log.info("New Step 2 Was Executed");
                 return RepeatStatus.FINISHED;
 //            }, transactionManager)
             }, getTransactionManager())
