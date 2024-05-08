@@ -7,8 +7,10 @@ class HomeScreen extends StatelessWidget {
   /// final controller = WebViewController();  컨트롤러가 주입됨
   /// final request = WebViewController().loadRequest(); // loadRequest의 결과값이 주입됨
   /// final result = WebViewController()..loadRequest(); // loadRequest를 실행하고, 컨트롤러가 주입됨.
+
   WebViewController controller = WebViewController()
-  ..loadRequest(homeUrl);
+    ..setJavaScriptMode(JavaScriptMode.unrestricted) // JavaScript 모드 허용방법
+    ..loadRequest(homeUrl);
 
   HomeScreen({super.key});
 
