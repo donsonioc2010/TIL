@@ -1,0 +1,43 @@
+version: "3.7" # 도커 버전에 맞는 버전으로 작성
+
+services:
+  redmine:
+    depends_on:
+      - redmine_db
+    image: redmine
+    restart: always
+    container_name: redmine
+    environment:
+      TZ: ${MYSQL_TIMEZONE}
+      REDMINE_DB_MYSQL: redmine_db
+      REDMINE_DB_USERNAME: root
+      REDMINE_DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      REDMINE_DB_DATABASE: ${MYSQL_DB_NAME}
+      REDMINE_DB_ENCODING: utf8
+      # REDMINE_NO_DB_MIGRATE: true
+    ports:
+      - ${REDMINE_PORT_BINDING_PORT}:${REDMINE_PORT}
+    volumes:
+      - ./redmine/data:/usr/src/redmine/files
+      - ./redmine/plugins:/usr/src/redmine/plugins
+      - ./redmine/themes:/usr/src/redmine/public/themes
+      - ./redmine/repo:/repo
+  redmine_db:
+    image: mysql
+    restart: always
+    container_name: redmine_db
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --host_cache_size=0
+    environment: # MySQL의 환경변수
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${MYSQL_TIMEZONE}
+      - MYSQL_DATABASE=${MYSQL_DB_NAME}
+    ports:
+      - ${BINDING_PORT}:${MYSQL_PORT}
+    volumes:
+      - ${MYSQL_DATA_PATH}:/var/lib/mysql
+      - ${MYSQL_CUSTOM_CONFIG_PATH}:/etc/mysql/conf.d
+      - ${MYSQL_DEFAULT_CONFIG_FILE}:/etc/my.cnf

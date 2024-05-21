@@ -3,6 +3,7 @@ version: "3.8"
 services:
   mysql: # container name
     image: mysql:8.0.31
+    restart: always
     ports: # 바인딩할 포트:내부 포트
       - ${MYSQL_BINDING_PORT}:${MYSQL_PORT}
     volumes: # 마운트할 볼륨 설정
@@ -12,4 +13,3 @@ services:
     environment: # MySQL의 환경변수
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=${TZ}
-    restart: always
