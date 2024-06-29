@@ -1,3 +1,4 @@
+import {NavigationContainer} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
   Button,
@@ -8,6 +9,8 @@ import {
   View,
 } from 'react-native';
 
+import AuthStackNavigatior from './src/navigation/AuthStackNavigator';
+
 function App(): JSX.Element {
   const [name, setName] = useState('');
   const handleChangeInput = (text: string) => {
@@ -16,17 +19,9 @@ function App(): JSX.Element {
   };
 
   return (
-    // 노치영역을 제외한 안전한 영역을 만들어주는 컴포넌트
-    <SafeAreaView style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Text>이름</Text>
-        <TextInput
-          style={styles.input}
-          value={name}
-          onChangeText={handleChangeInput}
-        />
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <AuthStackNavigatior />
+    </NavigationContainer>
   );
 }
 
