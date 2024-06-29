@@ -1,54 +1,16 @@
 import {NavigationContainer} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {
-  Button,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-
-import AuthStackNavigatior from './src/navigation/AuthStackNavigator';
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import RootNavigator from './src/navigations/root/RootNavigatior';
 
 function App(): JSX.Element {
-  const [name, setName] = useState('');
-  const handleChangeInput = (text: string) => {
-    console.log(text);
-    setName(text);
-  };
-
   return (
     <NavigationContainer>
-      <AuthStackNavigatior />
+      <RootNavigator />
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // margin: '20%',
-    // margin: 10,
-    // marginHorizontal: 10,
-    // marginVertical: 10,
-  },
-  input: {
-    flex: 1,
-    borderWidth: 2,
-    borderColor: 'black',
-    height: 50,
-    width: 100,
-  },
-  inputContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    // justifyContent: 'center',
-    // justifyContent: 'space-between',
-    // justifyContent: 'space-around',
-    // justifyContent: 'space-evenly',
-  },
-});
+const styles = StyleSheet.create({});
 
 export default App;
