@@ -32,7 +32,6 @@ function CustomButton({
       style={({pressed}) => [
         styles.container,
         pressed ? styles[`${variant}Pressed`] : styles[variant],
-
         invalid && styles.invalid,
       ]}
       {...props}>
