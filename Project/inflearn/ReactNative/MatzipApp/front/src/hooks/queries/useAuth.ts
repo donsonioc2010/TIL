@@ -5,20 +5,17 @@ import {
   logout,
   postLogin,
   postSignup,
-} from '../../api/auth';
-import {
-  UseMutationCustomOptions,
-  UseQueryCustomOptions,
-} from '../../types/common';
+} from '@/api/auth';
 import {
   removeEncryptStorage,
   removeHeader,
   setEncryptStorage,
   setHeader,
-} from '../../utils';
+} from '@/utils';
 import {useEffect} from 'react';
-import queryClient from '../../api/queryClient';
-import {numbers, queryKeys, storageKeys} from '../../constants';
+import queryClient from '@/api/queryClient';
+import {numbers, queryKeys, storageKeys} from '@/constants';
+import {UseMutationCustomOptions, UseQueryCustomOptions} from '@/types/common';
 
 function useSignup(mutationOptions?: UseMutationCustomOptions) {
   return useMutation({
